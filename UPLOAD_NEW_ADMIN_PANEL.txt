@@ -1,0 +1,182 @@
+═══════════════════════════════════════════════════════════════
+  NEW VENDOR ADMIN PANEL - MATCHES CUSTOMER KYC DESIGN
+═══════════════════════════════════════════════════════════════
+
+I've created a NEW admin panel that matches your customer KYC design exactly!
+
+═══════════════════════════════════════════════════════════════
+
+📁 UPLOAD THIS FILE:
+
+LOCAL FILE:
+  vendor_app/vendor-verification.php
+
+UPLOAD TO:
+  /home/royaldxd/crm.abra-logistic.com/vendor-verification.php
+
+═══════════════════════════════════════════════════════════════
+
+🎯 FEATURES (Same as Customer KYC):
+
+✅ Clean tabs design (SUBMITTED / VERIFIED / REJECTED)
+✅ Beautiful card layout with gradient header
+✅ Status badges (blue/green/red)
+✅ Document links that open in new tab
+✅ Action buttons:
+   - SUBMITTED status: "✓ Approve KYC" + "✗ Reject KYC"
+   - VERIFIED status: "⚠️ Revoke KYC"
+   - REJECTED status: "✓ Re-approve KYC"
+
+✅ Modal popups for reject/revoke (with reason input)
+✅ Notifications sent automatically
+✅ Same look and feel as customer KYC panel
+
+═══════════════════════════════════════════════════════════════
+
+🌐 ACCESS URL:
+
+After uploading, access at:
+https://crm.abra-logistic.com/vendor-verification.php
+
+═══════════════════════════════════════════════════════════════
+
+🔄 BUTTON FUNCTIONALITY:
+
+1. SUBMITTED Status:
+   ┌─────────────────┐  ┌─────────────────┐
+   │ ✓ Approve KYC   │  │ ✗ Reject KYC    │
+   └─────────────────┘  └─────────────────┘
+   
+   - Approve: Changes status to "verified", sends notification
+   - Reject: Shows modal, asks for reason, changes to "rejected"
+
+2. VERIFIED Status:
+   ┌─────────────────┐
+   │ ⚠️ Revoke KYC   │
+   └─────────────────┘
+   
+   - Revoke: Shows modal, asks for reason, changes to "rejected"
+   - Sets verified_at = NULL
+   - Sends notification with reason
+
+3. REJECTED Status:
+   ┌─────────────────┐
+   │ ✓ Re-approve KYC│
+   └─────────────────┘
+   
+   - Re-approve: Changes status back to "verified"
+   - Sends approval notification
+
+═══════════════════════════════════════════════════════════════
+
+📋 WHAT HAPPENS WHEN YOU CLICK:
+
+✓ Approve KYC:
+  1. Confirmation dialog appears
+  2. Status changes: submitted → verified
+  3. verified_at = NOW()
+  4. Notification sent: "KYC Verified Successfully"
+  5. Page reloads
+  6. Button changes to "⚠️ Revoke KYC"
+
+✗ Reject KYC:
+  1. Modal popup appears
+  2. Enter rejection reason
+  3. Status changes: submitted → rejected
+  4. Notification sent: "KYC Rejected" + reason
+  5. Page reloads
+  6. Button changes to "✓ Re-approve KYC"
+
+⚠️ Revoke KYC:
+  1. Modal popup appears
+  2. Enter revoke reason
+  3. Status changes: verified → rejected
+  4. verified_at = NULL
+  5. Notification sent: "KYC Revoked" + reason
+  6. Page reloads
+  7. Button changes to "✓ Re-approve KYC"
+
+✓ Re-approve KYC:
+  1. Confirmation dialog appears
+  2. Status changes: rejected → verified
+  3. verified_at = NOW()
+  4. Notification sent: "KYC Verified Successfully"
+  5. Page reloads
+  6. Button changes to "⚠️ Revoke KYC"
+
+═══════════════════════════════════════════════════════════════
+
+🎨 DESIGN FEATURES:
+
+✅ Purple gradient header (matches customer KYC)
+✅ Tab navigation with counts
+✅ Clean white cards with shadows
+✅ Status badges (color-coded)
+✅ Document links in gray boxes
+✅ Green/Red/Orange action buttons
+✅ Modal popups for reject/revoke
+✅ Responsive design
+✅ Smooth animations
+
+═══════════════════════════════════════════════════════════════
+
+🧪 TESTING:
+
+1. Upload vendor-verification.php to server
+
+2. Open: https://crm.abra-logistic.com/vendor-verification.php
+
+3. You should see:
+   - Tabs at top (SUBMITTED / VERIFIED / REJECTED)
+   - KYC cards with vendor details
+   - Document links (click to view images)
+   - Action buttons based on status
+
+4. Test Approve:
+   - Click "✓ Approve KYC" on submitted KYC
+   - Confirm dialog
+   - Should reload and show in VERIFIED tab
+
+5. Test Revoke:
+   - Go to VERIFIED tab
+   - Click "⚠️ Revoke KYC"
+   - Enter reason in modal
+   - Should reload and show in REJECTED tab
+
+6. Test Re-approve:
+   - Go to REJECTED tab
+   - Click "✓ Re-approve KYC"
+   - Confirm dialog
+   - Should reload and show in VERIFIED tab
+
+═══════════════════════════════════════════════════════════════
+
+✅ ADVANTAGES OF NEW PANEL:
+
+1. Matches customer KYC design (consistent UI)
+2. Cleaner, more professional look
+3. Tab navigation (easier to filter)
+4. Modal popups (better UX)
+5. All buttons work correctly
+6. Notifications sent automatically
+7. Same database (vendor_kyc table)
+8. Same notification system
+
+═══════════════════════════════════════════════════════════════
+
+📝 NOTES:
+
+- This is a COMPLETE replacement for admin_kyc_panel.html
+- Uses PHP (not HTML+JS) for better server-side control
+- All actions handled in same file (no separate API calls)
+- Works with existing database and notification system
+- No changes needed to app code
+
+═══════════════════════════════════════════════════════════════
+
+🎉 RESULT:
+
+After uploading, you'll have a vendor KYC admin panel that looks and
+works EXACTLY like your customer KYC panel!
+
+═══════════════════════════════════════════════════════════════

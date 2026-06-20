@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Change method to "app-store" when submitting to App Store -->
+  <key>method</key>
+  <string>ad-hoc</string>
+
+  <key>teamID</key>
+  <!-- Replace with your Apple Developer Team ID (10-char string) -->
+  <string>YOUR_TEAM_ID</string>
+
+  <key>provisioningProfiles</key>
+  <dict>
+    <!-- Key = Bundle ID, Value = Provisioning Profile name -->
+    <key>com.abraglobal.vendor</key>
+    <string>abra_vendor</string>
+  </dict>
+
+  <key>signingStyle</key>
+  <string>manual</string>
+
+  <key>stripSwiftSymbols</key>
+  <true/>
+
+  <key>compileBitcode</key>
+  <false/>
+
+  <key>thinning</key>
+  <string>&lt;none&gt;</string>
+</dict>
+</plist>

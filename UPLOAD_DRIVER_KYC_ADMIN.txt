@@ -1,0 +1,79 @@
+═══════════════════════════════════════════════════════════════
+  DRIVER KYC ADMIN PANEL - UPLOAD INSTRUCTIONS
+═══════════════════════════════════════════════════════════════
+
+📋 UPLOAD FILE
+═══════════════════════════════════════════════════════════════
+
+Upload to /public_html/:
+
+✅ driver_kyc_admin_panel.php
+
+
+📋 ACCESS THE PANEL
+═══════════════════════════════════════════════════════════════
+
+URL: https://crm.abra-logistic.com/driver_kyc_admin_panel.php
+
+
+📋 FEATURES
+═══════════════════════════════════════════════════════════════
+
+✓ View all driver KYC submissions
+✓ See statistics (Submitted, Under Review, Verified, Rejected)
+✓ View driver details and documents
+✓ View uploaded images (Aadhar, PAN, License)
+✓ Approve/Reject KYC
+✓ Add rejection reason
+✓ Add admin notes
+✓ Auto-send notifications to drivers
+
+
+📋 HOW TO USE
+═══════════════════════════════════════════════════════════════
+
+1. Open driver_kyc_admin_panel.php in browser
+2. See all driver KYC submissions in table
+3. Click "View" button to see details
+4. Modal opens with:
+   - Personal information
+   - Document numbers
+   - All uploaded images
+   - Status update form
+5. Select new status (Under Review, Verified, Rejected)
+6. Add rejection reason if rejecting
+7. Add admin notes
+8. Click "Update Status"
+9. Driver gets notification automatically
+
+
+📋 STATUS FLOW
+═══════════════════════════════════════════════════════════════
+
+submitted → under_review → verified
+                        ↓
+                     rejected
+
+
+📋 DASHBOARD NAVIGATION (NEXT STEP)
+═══════════════════════════════════════════════════════════════
+
+Add these links to dashboard.php:
+
+- Orders Management
+- Pickup Assignment
+- Driver KYC
+- Vendor KYC
+- Vehicles
+- Support (with chat bot)
+
+
+═══════════════════════════════════════════════════════════════
+                    ADMIN PANEL READY! 🚀
+═══════════════════════════════════════════════════════════════
+
+Your internal team can now:
+✓ View all driver KYC submissions
+✓ Review documents
+✓ Approve or reject KYC
+✓ Drivers get instant notifications

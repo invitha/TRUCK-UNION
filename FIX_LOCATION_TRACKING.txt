@@ -1,0 +1,31 @@
+LOCATION TRACKING FIX - STEP BY STEP
+=====================================
+
+PROBLEM: Location columns are NOT in the database yet
+The test showed: "has_location_columns": false
+
+SOLUTION: Run this URL to automatically add the columns
+----------------------------------------------------------
+
+STEP 1: Open this URL in your browser:
+https://crm.abra-logistic.com/api1/vendor/check_and_add_location_columns.php
+
+This will:
+- Check if location columns exist
+- If missing, automatically add them
+- Show success message
+
+STEP 2: After columns are added, set driver online:
+https://crm.abra-logistic.com/api1/vendor/test_set_driver_online.php
+
+STEP 3: View the dashboard:
+https://crm.abra-logistic.com/dashboard.php
+
+Now you should see the location data!
+
+FILES TO UPLOAD:
+----------------
+1. vendor_app/server_php/api1_vendor/check_and_add_location_columns.php
+   Upload to: /api1/vendor/check_and_add_location_columns.php
+
+That's it! Just run the URL and it will fix everything automatically.

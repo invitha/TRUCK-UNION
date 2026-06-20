@@ -1,0 +1,115 @@
+name: Build iOS IPA
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build_ios:
+    name: Build & Sign iOS IPA
+    runs-on: macos-latest
+
+    steps:
+      # ── 1. Checkout code ─────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Setup Flutter ─────────────────────────────────────────────────
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: 'stable'
+          cache: true
+
+      # ── 3. Install dependencies ──────────────────────────────────────────
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      # ── 4. Install CocoaPods ─────────────────────────────────────────────
+      - name: Install CocoaPods dependencies
+        run: |
+          cd ios
+          pod install --repo-update
+
+      # ── 5. Import signing certificate & provisioning profile ─────────────
+      #    Add these secrets in GitHub → Settings → Secrets:
+      #      IOS_CERTIFICATE_BASE64       — p12 cert encoded as base64
+      #      IOS_CERTIFICATE_PASSWORD     — p12 password
+      #      IOS_PROVISIONING_PROFILE_BASE64 — .mobileprovision encoded as base64
+      #      KEYCHAIN_PASSWORD            — any random string
+      - name: Import code-signing assets
+        env:
+          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          # Create temp keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+          security set-keychain-settings -t 3600 -u build.keychain
+
+          # Decode & import certificate
+          echo "$IOS_CERTIFICATE_BASE64" | base64 --decode > /tmp/cert.p12
+          security import /tmp/cert.p12 -k build.keychain \
+            -P "$IOS_CERTIFICATE_PASSWORD" \
+            -T /usr/bin/codesign
+          security set-key-partition-list \
+            -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+
+          # Decode & install provisioning profile
+          echo "$IOS_PROVISIONING_PROFILE_BASE64" | base64 --decode \
+            > ~/Library/MobileDevice/Provisioning\ Profiles/abra_vendor.mobileprovision
+
+      # ── 6. Build IPA ──────────────────────────────────────────────────────
+      - name: Build iOS IPA
+        run: |
+          flutter build ipa \
+            --release \
+            --export-options-plist=ios/ExportOptions.plist
+
+      # ── 7. Upload IPA as artifact ─────────────────────────────────────────
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ABRA-Vendor-iOS
+          path: build/ios/ipa/*.ipa
+          retention-days: 30
+
+  # ── Separate job: Android APK ────────────────────────────────────────────
+  build_android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: 'stable'
+          cache: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ABRA-Vendor-Android
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30

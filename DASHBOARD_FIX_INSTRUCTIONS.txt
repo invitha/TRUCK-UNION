@@ -1,0 +1,88 @@
+═══════════════════════════════════════════════════════════════
+  DASHBOARD "PAGE NOT WORKING" FIX
+═══════════════════════════════════════════════════════════════
+
+PROBLEM:
+--------
+Dashboard.php shows "page not working" error.
+
+MOST LIKELY CAUSE:
+------------------
+The `vehicle_tonnage` column doesn't exist in the database yet.
+
+═══════════════════════════════════════════════════════════════
+  QUICK FIX - STEP BY STEP
+═══════════════════════════════════════════════════════════════
+
+STEP 1: Diagnose the Issue
+---------------------------
+1. Upload test_dashboard.php to your server
+2. Access it in browser: https://crm.abra-logistic.com/test_dashboard.php
+3. This will show you exactly what's missing
+
+STEP 2: Add Missing Column
+---------------------------
+If the diagnostic shows "vehicle_tonnage column MISSING":
+
+1. Go to phpMyAdmin
+2. Select database: royaldxd_abra_crm
+3. Select table: vehicles
+4. Click "SQL" tab
+5. Run this command:
+
+ALTER TABLE `vehicles` 
+ADD COLUMN `vehicle_tonnage` VARCHAR(50) NULL 
+AFTER `vehicle_size_feet`;
+
+STEP 3: Test Dashboard
+-----------------------
+After adding the column, access:
+https://crm.abra-logistic.com/dashboard.php
+
+It should work now!
+
+═══════════════════════════════════════════════════════════════
+  ALTERNATIVE: Use Simple Dashboard (No Tonnage)
+═══════════════════════════════════════════════════════════════
+
+If you don't want to add tonnage yet, use:
+https://crm.abra-logistic.com/dashboard_simple.php
+
+This version doesn't require the tonnage column.
+
+═══════════════════════════════════════════════════════════════
+  COMMON ERRORS AND SOLUTIONS
+═══════════════════════════════════════════════════════════════
+
+ERROR: "Unknown column 'vehicle_tonnage'"
+SOLUTION: Run the ALTER TABLE command above
+
+ERROR: "Table 'vehicles' doesn't exist"
+SOLUTION: Run create_vehicles_table.sql first
+
+ERROR: "Access denied"
+SOLUTION: Check database credentials in dashboard.php
+
+ERROR: "500 Internal Server Error"
+SOLUTION: Check PHP error logs or enable display_errors
+
+═══════════════════════════════════════════════════════════════
+  FILES INVOLVED
+═══════════════════════════════════════════════════════════════
+
+1. dashboard.php - Main dashboard (requires tonnage column)
+2. test_dashboard.php - Diagnostic tool (NEW - upload this first)
+3. add_tonnage_column.sql - SQL to add tonnage column
+4. dashboard_simple.php - Fallback dashboard (no tonnage needed)
+
+═══════════════════════════════════════════════════════════════
+  UPLOAD ORDER
+═══════════════════════════════════════════════════════════════
+
+1. Upload test_dashboard.php
+2. Access it to see what's missing
+3. Fix the issue (add column)
+4. Upload dashboard.php
+5. Test it
+
+═══════════════════════════════════════════════════════════════

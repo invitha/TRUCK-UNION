@@ -1,0 +1,38 @@
+UPLOAD THESE FILES TO SERVER TO FIX VENDOR DASHBOARD & DRIVER ASSIGNMENT ISSUE
+================================================================================
+
+PROBLEM FIXED:
+- Vendors were seeing Accept/Decline buttons even after accepting shipments
+- Drivers could see assignments before vendors accepted them
+- Workflow was confusing
+
+FILES TO UPLOAD:
+================================================================================
+
+1. Upload to: /public_html/vendor_app/api1_vendor/
+   File: get_driver_orders_enhanced.php
+   
+2. Upload to: /public_html/vendor_app/api1_vendor/ 
+   File: get_fleet_assignments.php
+
+3. Rebuild Flutter app with updated:
+   File: lib/screens/vendor/assigned_fleets_screen.dart
+
+WHAT'S FIXED:
+================================================================================
+
+FOR VENDORS:
+✅ Accept/Decline buttons only show for "pending" assignments
+✅ After accepting, shows "Assignment Accepted - Driver can now see this order"
+✅ Tab renamed to "Pending & Active" for clarity
+
+FOR DRIVERS: 
+✅ Only see assignments that vendors have already accepted
+✅ No more seeing assignments in "pending" status
+✅ Clear message when no assignments are available
+
+WORKFLOW NOW:
+================================================================================
+Admin Creates → Vendor Sees Pending → Vendor Accepts → Driver Can See → Complete
+
+This ensures drivers only work on vendor-approved assignments!

@@ -1,0 +1,174 @@
+═══════════════════════════════════════════════════════════════
+  UPLOAD THESE FILES TO FIX ALL REMAINING ISSUES
+═══════════════════════════════════════════════════════════════
+
+📋 ISSUE SUMMARY:
+1. ❌ Images not showing when KYC submitted
+2. ❌ Notification badge not showing (CORS error)
+3. ❌ Revoke button not showing in admin panel
+
+═══════════════════════════════════════════════════════════════
+
+📁 FILES TO UPLOAD:
+
+1️⃣ FIX IMAGES - Upload this file:
+   
+   LOCAL: vendor_app/server_php/serve_kyc_image.php
+   SERVER: /home/royaldxd/crm.abra-logistic.com/serve_kyc_image.php
+   
+   ✅ This file is ALREADY CORRECT with vendor_kyc_documents path
+
+2️⃣ FIX NOTIFICATIONS - Upload these 3 files:
+   
+   LOCAL: vendor_app/server_php/api1_vendor/get_notifications.php
+   SERVER: /home/royaldxd/crm.abra-logistic.com/api1/vendor/get_notifications.php
+   
+   LOCAL: vendor_app/server_php/api1_vendor/mark_notification_read.php
+   SERVER: /home/royaldxd/crm.abra-logistic.com/api1/vendor/mark_notification_read.php
+   
+   LOCAL: vendor_app/server_php/api1_vendor/create_notification.php
+   SERVER: /home/royaldxd/crm.abra-logistic.com/api1/vendor/create_notification.php
+
+3️⃣ FIX REVOKE BUTTON - Upload this file:
+   
+   LOCAL: vendor_app/admin_kyc_panel.html
+   SERVER: /home/royaldxd/crm.abra-logistic.com/admin_kyc_panel.html
+   
+   ⚠️ IMPORTANT: Clear browser cache after upload!
+   - Windows: Ctrl + Shift + R
+   - Mac: Cmd + Shift + R
+
+4️⃣ ENSURE KYC UPLOAD WORKS - Verify this file exists:
+   
+   LOCAL: vendor_app/server_php/api1_vendor/upload_kyc_documents.php
+   SERVER: /home/royaldxd/crm.abra-logistic.com/api1/vendor/upload_kyc_documents.php
+   
+   ✅ This file has ACTUAL file upload (not mock paths)
+
+═══════════════════════════════════════════════════════════════
+
+🧪 TESTING AFTER UPLOAD:
+
+1. Test Image Serving:
+   Open in browser:
+   https://crm.abra-logistic.com/serve_kyc_image.php?uid=YOUR_FIREBASE_UID&file=aadhaar_1234567890.jpg
+   
+   ✅ Should show image or "File not found" (not 404 error page)
+
+2. Test Notifications API:
+   Open in browser:
+   https://crm.abra-logistic.com/api1/vendor/get_notifications.php
+   
+   ✅ Should return JSON (not CORS error)
+
+3. Test Admin Panel:
+   a) Open: https://crm.abra-logistic.com/admin_kyc_panel.html
+   b) Clear cache: Ctrl+Shift+R
+   c) Find a VERIFIED KYC
+   d) ✅ Should see orange "⚠️ Revoke" button
+
+4. Test Notification Badge:
+   a) Open vendor app
+   b) Go to dashboard
+   c) ✅ Should see red badge with number on notification icon
+
+═══════════════════════════════════════════════════════════════
+
+📝 WHAT EACH FILE DOES:
+
+serve_kyc_image.php:
+- Serves uploaded KYC documents (Aadhaar, PAN, Photo, etc.)
+- Used by admin panel to display documents
+- Path: /uploads/vendor_kyc_documents/{uid}/{filename}
+
+get_notifications.php:
+- Returns list of notifications for vendor
+- Shows unread count
+- Used by app to display notifications
+
+mark_notification_read.php:
+- Marks notifications as read
+- Used when vendor opens notification screen
+
+create_notification.php:
+- Helper function to create notifications
+- Used by other PHP files (upload_kyc_documents.php, update_kyc_status.php)
+
+admin_kyc_panel.html:
+- Admin interface to approve/reject/revoke KYC
+- Shows all vendor KYC submissions
+- Has revoke button for verified KYCs
+
+upload_kyc_documents.php:
+- Handles KYC form submission with file uploads
+- Saves files to /uploads/vendor_kyc_documents/{uid}/
+- Creates notification after successful upload
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ COMMON ISSUES:
+
+1. "Images not found" after upload:
+   → Check file permissions: chmod 755 on directories
+   → Check file ownership: chown www-data:www-data
+   → Verify path: /home/royaldxd/crm.abra-logistic.com/uploads/vendor_kyc_documents/
+
+2. "CORS error" on notifications:
+   → Files not uploaded to server yet
+   → Check URL: https://crm.abra-logistic.com/api1/vendor/get_notifications.php
+   → Should return JSON, not 404
+
+3. "Revoke button not showing":
+   → Clear browser cache (Ctrl+Shift+R)
+   → Check if KYC status is "verified" (not "submitted")
+   → Verify admin_kyc_panel.html uploaded to server
+
+4. "Notification badge not showing":
+   → Check console for errors
+   → Verify get_notifications.php returns success
+   → Check if user is logged in (Firebase Auth)
+
+═══════════════════════════════════════════════════════════════
+
+✅ VERIFICATION CHECKLIST:
+
+□ serve_kyc_image.php uploaded
+□ get_notifications.php uploaded
+□ mark_notification_read.php uploaded
+□ create_notification.php uploaded
+□ admin_kyc_panel.html uploaded
+□ upload_kyc_documents.php uploaded
+□ Browser cache cleared
+□ Images showing in admin panel
+□ Notification badge showing in app
+□ Revoke button showing for verified KYCs
+□ Notifications working in app
+
+═══════════════════════════════════════════════════════════════
+
+🎯 EXPECTED BEHAVIOR AFTER FIX:
+
+1. When vendor submits KYC:
+   ✅ Files upload to server
+   ✅ Notification created: "KYC Submitted Successfully"
+   ✅ Status changes to "submitted"
+   ✅ Images visible in admin panel
+
+2. When admin approves KYC:
+   ✅ Status changes to "verified"
+   ✅ Notification created: "KYC Verified Successfully"
+   ✅ Revoke button appears in admin panel
+   ✅ Vendor can add vehicles
+
+3. When admin revokes KYC:
+   ✅ Prompt for reason
+   ✅ Status changes to "rejected"
+   ✅ Notification created: "KYC Revoked"
+   ✅ Re-Approve button appears
+
+4. Notification badge:
+   ✅ Shows red circle with number
+   ✅ Updates when new notification arrives
+   ✅ Clears when vendor opens notifications
+
+═══════════════════════════════════════════════════════════════

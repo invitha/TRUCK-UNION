@@ -1,0 +1,59 @@
+REVOKE & RE-SUBMIT FEATURE - FILES TO UPLOAD
+============================================
+
+NEW FEATURES:
+-------------
+✅ Admin can REVOKE verified KYC (verified → submitted)
+✅ Admin can RE-APPROVE rejected KYC (rejected → verified)
+✅ Vendor can RE-SUBMIT rejected KYC (rejected → submitted)
+
+SERVER FILES:
+-------------
+1. vendor_app/server_php/api1_vendor/update_kyc_status.php
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/api1/vendor/update_kyc_status.php
+   → Added: Revoke support (status = 'submitted')
+
+2. vendor_app/admin_kyc_panel.html
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/admin_kyc_panel.html
+   → Added: Revoke button (orange) for verified KYCs
+   → Added: Re-Approve button (green) for rejected KYCs
+
+APP FILES (Rebuild Required):
+------------------------------
+3. lib/screens/vendor/kyc_verification_screen.dart
+   → Changed: Button text to "Re-Submit for Verification" when rejected
+   → Changed: Form enabled for rejected status
+
+4. lib/screens/vendor/notifications_screen.dart
+   → Added: kyc_revoked notification type (orange)
+
+Run: flutter build apk
+
+ADMIN PANEL BUTTONS:
+====================
+Status: submitted  → ✓ Approve | ✗ Reject
+Status: verified   → ⚠️ Revoke (NEW)
+Status: rejected   → ✓ Re-Approve (NEW)
+
+TESTING:
+========
+1. Admin approves KYC → Vendor sees verified
+2. Admin clicks "Revoke" → Status back to submitted
+3. Vendor gets "⚠️ KYC Verification Revoked" notification
+4. Admin can approve/reject again
+
+OR
+
+1. Admin rejects KYC → Vendor sees rejected
+2. Admin clicks "Re-Approve" → Status to verified
+3. Vendor gets "✅ KYC Verified Successfully!" notification
+
+OR
+
+1. Admin rejects KYC → Vendor sees rejected
+2. Vendor edits documents
+3. Vendor clicks "Re-Submit for Verification"
+4. Status back to submitted
+5. Admin can review again
+
+See REVOKE_RESUBMIT_FEATURE.md for complete details.

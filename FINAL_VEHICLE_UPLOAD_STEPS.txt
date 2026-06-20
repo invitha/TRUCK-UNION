@@ -1,0 +1,60 @@
+# FINAL STEPS - Upload Vehicle Management Files
+
+## YOU ARE HERE: Files are ready but not uploaded to server yet!
+
+## Step 1: Upload PHP Files to Server
+Upload these 5 files to: https://crm.abra-logistic.com/api1/vendor/
+
+Files to upload from: vendor_app/server_php/api1_vendor/
+1. add_vehicle.php
+2. get_vehicles.php  
+3. update_vehicle.php
+4. delete_vehicle.php
+5. test_add_vehicle.php (optional - for testing)
+
+## Step 2: Run SQL in phpMyAdmin
+1. Login to phpMyAdmin
+2. Select database: royaldxd_abra_crm
+3. Go to SQL tab
+4. Copy and paste contents of: vendor_app/server_php/create_vehicles_table.sql
+5. Click "Go" to execute
+
+## Step 3: Test
+After uploading, visit this URL in browser:
+https://crm.abra-logistic.com/api1/vendor/test_add_vehicle.php
+
+It should show:
+{"status":"success","message":"vehicles table exists with all required columns"}
+
+## Step 4: Try Adding Vehicle in App
+1. Restart Flutter app
+2. Go to My Vehicles
+3. Click Add Vehicle
+4. Fill all fields including Location
+5. Submit
+
+It should work now!
+
+## What the App Has:
+✅ Vendor Name
+✅ Vendor Email
+✅ Vendor Phone
+✅ Vendor Location/Address
+✅ Vehicle Number
+✅ Vehicle Name/Model
+✅ Vehicle Year
+✅ Vehicle Type (with "Other - Specify" option)
+✅ Vehicle Size (6 feet to 40 feet + "Other - Specify")
+✅ Driver Name
+✅ Driver Username
+✅ Driver Password
+✅ Add multiple vehicles with + button
+✅ Remove vehicle button
+
+## Current Status:
+- Flutter app: ✅ READY
+- Database table SQL: ✅ READY
+- PHP API files: ⏳ NEED TO UPLOAD
+- Database table: ⏳ NEED TO RUN SQL
+
+Once you upload the files and run the SQL, everything will work!

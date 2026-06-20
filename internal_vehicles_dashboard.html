@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Vehicles Dashboard - TRUCK UNION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0D2E6E 0%, #1E40AF 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stat-card.online h3 { color: #10B981; }
+        .stat-card.offline h3 { color: #EF4444; }
+        .stat-card.total h3 { color: #0D2E6E; }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filters label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .filters select, .filters input {
+            padding: 8px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .filters button {
+            padding: 8px 20px;
+            background: #0D2E6E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .filters button:hover {
+            background: #1E40AF;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #0D2E6E 0%, #1E40AF 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #f8f9ff;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-online {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-offline {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .location-link {
+            color: #0D2E6E;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .location-link:hover {
+            text-decoration: underline;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #0D2E6E;
+            font-size: 18px;
+        }
+
+        .vehicle-type {
+            background: #E0E7FF;
+            color: #3730A3;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .last-update {
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚛 Internal Vehicles Dashboard</h1>
+            <p>Real-time tracking of all vendor vehicles</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <h3 id="totalVehicles">0</h3>
+                <p>Total Vehicles</p>
+            </div>
+            <div class="stat-card online">
+                <h3 id="onlineVehicles">0</h3>
+                <p>Online Now</p>
+            </div>
+            <div class="stat-card offline">
+                <h3 id="offlineVehicles">0</h3>
+                <p>Offline</p>
+            </div>
+        </div>
+
+        <div class="filters">
+            <label>Status:</label>
+            <select id="statusFilter">
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+
+            <label>Online:</label>
+            <select id="onlineFilter">
+                <option value="">All</option>
+                <option value="online">Online Only</option>
+                <option value="offline">Offline Only</option>
+            </select>
+
+            <label>Search:</label>
+            <input type="text" id="searchInput" placeholder="Vehicle number, driver name...">
+
+            <button onclick="loadVehicles()">🔄 Refresh</button>
+            <button onclick="enableAutoRefresh()">⏱️ Auto Refresh (30s)</button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Vehicle Number</th>
+                        <th>Type</th>
+                        <th>Size (Feet)</th>
+                        <th>Driver Name</th>
+                        <th>Vendor</th>
+                        <th>Location</th>
+                        <th>Last Update</th>
+                    </tr>
+                </thead>
+                <tbody id="vehiclesTable">
+                    <tr>
+                        <td colspan="8" class="loading">Loading vehicles...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let autoRefreshInterval = null;
+
+        function loadVehicles() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const onlineFilter = document.getElementById('onlineFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            let url = 'https://crm.abra-logistic.com/api1/vendor/get_all_vehicles_simple.php?';
+            if (statusFilter) url += `status=${statusFilter}&`;
+            if (onlineFilter) url += `online=${onlineFilter}&`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Update stats
+                        document.getElementById('totalVehicles').textContent = data.total;
+                        document.getElementById('onlineVehicles').textContent = data.online_count;
+                        document.getElementById('offlineVehicles').textContent = data.offline_count;
+
+                        // Filter by search term
+                        let vehicles = data.vehicles;
+                        if (searchTerm) {
+                            vehicles = vehicles.filter(v => 
+                                v.vehicle_number.toLowerCase().includes(searchTerm) ||
+                                v.driver_name.toLowerCase().includes(searchTerm) ||
+                                v.vendor_name.toLowerCase().includes(searchTerm)
+                            );
+                        }
+
+                        // Render table
+                        renderTable(vehicles);
+                    } else {
+                        document.getElementById('vehiclesTable').innerHTML = 
+                            `<tr><td colspan="8" class="no-data">Error: ${data.message}</td></tr>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('vehiclesTable').innerHTML = 
+                        `<tr><td colspan="8" class="no-data">Failed to load vehicles</td></tr>`;
+                });
+        }
+
+        function renderTable(vehicles) {
+            const tbody = document.getElementById('vehiclesTable');
+            
+            if (vehicles.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="no-data">No vehicles found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = vehicles.map(v => {
+                const isOnline = v.is_online == 1;
+                const hasLocation = v.last_latitude && v.last_longitude;
+                const locationText = hasLocation ? 
+                    (v.location_address || `${v.last_latitude}, ${v.last_longitude}`) : 
+                    'No location';
+                const locationLink = hasLocation ? 
+                    `https://www.google.com/maps?q=${v.last_latitude},${v.last_longitude}` : 
+                    '#';
+                
+                const lastUpdate = v.last_location_update ? 
+                    new Date(v.last_location_update).toLocaleString() : 
+                    'Never';
+
+                return `
+                    <tr>
+                        <td>
+                            <span class="status-badge ${isOnline ? 'status-online' : 'status-offline'}">
+                                ${isOnline ? '🟢 Online' : '🔴 Offline'}
+                            </span>
+                        </td>
+                        <td><strong>${v.vehicle_number}</strong></td>
+                        <td><span class="vehicle-type">${v.vehicle_type}</span></td>
+                        <td>${v.vehicle_size_feet} ft</td>
+                        <td>${v.driver_name}</td>
+                        <td>${v.vendor_name}<br><small>${v.vendor_phone}</small></td>
+                        <td>
+                            ${hasLocation ? 
+                                `<a href="${locationLink}" target="_blank" class="location-link">📍 View Map</a><br>
+                                <small>${locationText.substring(0, 40)}...</small>` : 
+                                '<span style="color: #999;">No location</span>'
+                            }
+                        </td>
+                        <td class="last-update">${lastUpdate}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function enableAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+                alert('Auto-refresh disabled');
+            } else {
+                autoRefreshInterval = setInterval(loadVehicles, 30000);
+                alert('Auto-refresh enabled (every 30 seconds)');
+                loadVehicles();
+            }
+        }
+
+        // Search on input
+        document.getElementById('searchInput').addEventListener('input', loadVehicles);
+
+        // Load on page load
+        loadVehicles();
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+═══════════════════════════════════════════════════════════════
+  DRIVER KYC SYSTEM - UPLOAD INSTRUCTIONS
+═══════════════════════════════════════════════════════════════
+
+📋 STEP 1: DATABASE SETUP
+═══════════════════════════════════════════════════════════════
+
+Upload and execute this SQL file:
+📄 vendor_app/server_php/create_driver_kyc_table.sql
+
+This creates driver_kyc table with:
+- Driver personal info (name, mobile, email)
+- Aadhar card (number + front/back images)
+- PAN card (number + image)
+- Driving License (number + front/back images)
+- Address details
+- KYC status tracking
+
+
+📋 STEP 2: UPLOAD PHP API FILES
+═══════════════════════════════════════════════════════════════
+
+Upload to /public_html/api1/vendor/:
+
+✅ submit_driver_kyc.php
+✅ get_driver_kyc_status.php
+✅ upload_driver_kyc_documents.php
+✅ update_driver_kyc_status.php
+
+Upload to /public_html/:
+
+✅ get_all_driver_kyc.php
+
+
+📋 STEP 3: CREATE FOLDERS
+═══════════════════════════════════════════════════════════════
+
+Create folder on server:
+/public_html/driver_kyc_documents/
+
+Set permissions: 755 or 777
+
+
+📋 STEP 4: FLUTTER APP FILES
+═══════════════════════════════════════════════════════════════
+
+Already updated in your project:
+✅ lib/services/api_service.dart (driver KYC methods added)
+✅ lib/screens/driver/driver_kyc_screen.dart (new KYC screen)
+
+
+📋 DRIVER KYC REQUIREMENTS
+═══════════════════════════════════════════════════════════════
+
+Required Information:
+✓ Full Name
+✓ Mobile Number
+✓ Email (optional)
+
+Required Documents:
+✓ Aadhar Card Number + Front & Back Photos
+✓ PAN Card Number + Photo
+✓ Driving License Number + Front & Back Photos
+
+Address:
+✓ Full Address
+✓ City
+✓ State
+✓ Pincode
+
+NO BANK ACCOUNT DETAILS NEEDED!
+
+
+📋 KYC STATUS FLOW
+═══════════════════════════════════════════════════════════════
+
+pending → submitted → under_review → verified
+                                   ↓
+                                rejected
+
+
+📋 HOW IT WORKS
+═══════════════════════════════════════════════════════════════
+
+1. DRIVER: Opens KYC screen in app
+   → Fills personal information
+   → Uploads Aadhar (front + back)
+   → Uploads PAN card
+   → Uploads License (front + back)
+   → Fills address
+   → Submits KYC
+
+2. SYSTEM: Saves data and documents
+   → Status: "submitted"
+   → Admin gets notification
+
+3. ADMIN: Reviews KYC in admin panel
+   → Views all documents
+   → Verifies information
+   → Approves or Rejects
+
+4. DRIVER: Gets status update
+   → If verified: Can start working
+   → If rejected: Can resubmit
+
+
+📋 ADMIN PANEL (Coming Next)
+═══════════════════════════════════════════════════════════════
+
+Will create admin panel to:
+- View all driver KYC submissions
+- See uploaded documents
+- Approve/Reject KYC
+- Add admin notes
+- Track verification status
+
+
+📋 TESTING
+═══════════════════════════════════════════════════════════════
+
+1. Login as driver in app
+2. Navigate to KYC screen
+3. Fill all information
+4. Upload all 5 documents
+5. Submit KYC
+6. Check database for entry
+7. Check driver_kyc_documents folder for images
+
+
+📋 FILES SUMMARY
+═══════════════════════════════════════════════════════════════
+
+SERVER FILES:
+- create_driver_kyc_table.sql (database)
+- api1_vendor/submit_driver_kyc.php
+- api1_vendor/get_driver_kyc_status.php
+- api1_vendor/upload_driver_kyc_documents.php
+- api1_vendor/update_driver_kyc_status.php
+- get_all_driver_kyc.php
+
+FLUTTER FILES:
+- lib/services/api_service.dart (updated)
+- lib/screens/driver/driver_kyc_screen.dart (new)
+
+FOLDER:
+- driver_kyc_documents/ (create on server)
+
+
+═══════════════════════════════════════════════════════════════
+                    DRIVER KYC READY! 🚀
+═══════════════════════════════════════════════════════════════

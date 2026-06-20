@@ -1,0 +1,127 @@
+═══════════════════════════════════════════════════════════════
+  VENDOR KYC ADMIN PANEL - SETUP CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+📍 FILE LOCATION: vendor_app/server_php/vendor-verification.php
+
+═══════════════════════════════════════════════════════════════
+  STEP 1: CONFIGURE DATABASE
+═══════════════════════════════════════════════════════════════
+
+[ ] Open db_config.php
+[ ] Update $db_username (probably: royaldxd_abra)
+[ ] Update $db_password (your actual password)
+[ ] Update $db_name (probably: royaldxd_abra)
+[ ] Save the file
+
+═══════════════════════════════════════════════════════════════
+  STEP 2: CREATE DATABASE TABLE
+═══════════════════════════════════════════════════════════════
+
+[ ] Open phpMyAdmin in browser
+[ ] Login with your credentials
+[ ] Select database: royaldxd_abra
+[ ] Click "SQL" tab
+[ ] Open file: create_vendor_kyc_table.sql
+[ ] Copy ALL the SQL code
+[ ] Paste into phpMyAdmin
+[ ] Click "Go" button
+[ ] Verify: "Query executed successfully"
+[ ] Check "Structure" tab - vendor_kyc table should be there
+
+═══════════════════════════════════════════════════════════════
+  STEP 3: UPLOAD FILES TO SERVER
+═══════════════════════════════════════════════════════════════
+
+Upload these files to: /home/royaldxd/crm.abra-logistic.com/
+
+[ ] vendor-verification.php
+[ ] db_config.php (with your password!)
+[ ] test_connection.php
+
+Upload method:
+[ ] FTP (FileZilla)
+[ ] cPanel File Manager
+[ ] Other: _______________
+
+═══════════════════════════════════════════════════════════════
+  STEP 4: TEST CONNECTION
+═══════════════════════════════════════════════════════════════
+
+[ ] Open: https://crm.abra-logistic.com/test_connection.php
+[ ] Verify: ✓ db_config.php file exists
+[ ] Verify: ✓ Database connected successfully
+[ ] Verify: ✓ vendor_kyc table exists
+[ ] Verify: ✓ All tests passed!
+[ ] DELETE test_connection.php (security!)
+
+═══════════════════════════════════════════════════════════════
+  STEP 5: ACCESS ADMIN PANEL
+═══════════════════════════════════════════════════════════════
+
+[ ] Open: https://crm.abra-logistic.com/vendor-verification.php
+[ ] Verify: Admin panel loads without errors
+[ ] Verify: Header shows "TRUCK UNION - Vendor KYC Admin Panel"
+[ ] Verify: Filter tabs are visible (Submitted/Verified/Rejected/Pending)
+[ ] Verify: No HTTP 500 error
+
+═══════════════════════════════════════════════════════════════
+  TROUBLESHOOTING (if needed)
+═══════════════════════════════════════════════════════════════
+
+If HTTP 500 error:
+[ ] Check db_config.php credentials
+[ ] Run test_connection.php
+[ ] Check PHP error logs
+[ ] Verify table was created
+
+If "table missing" error:
+[ ] Run SQL script again in phpMyAdmin
+[ ] Check database name is correct
+[ ] Verify you selected the right database
+
+If "connection failed":
+[ ] Check database username/password
+[ ] Verify MySQL service is running
+[ ] Check hosting control panel
+
+═══════════════════════════════════════════════════════════════
+  SUCCESS CRITERIA
+═══════════════════════════════════════════════════════════════
+
+You're done when:
+[ ] test_connection.php shows all green checkmarks
+[ ] vendor-verification.php loads without errors
+[ ] Admin panel interface is visible
+[ ] Filter tabs work
+[ ] No database errors
+
+═══════════════════════════════════════════════════════════════
+  AFTER SETUP
+═══════════════════════════════════════════════════════════════
+
+[ ] Delete test_connection.php from server
+[ ] Test with sample KYC submission from Flutter app
+[ ] Verify approve/reject actions work
+[ ] Check notifications are sent to vendors
+
+═══════════════════════════════════════════════════════════════
+  NOTES
+═══════════════════════════════════════════════════════════════
+
+Database credentials location:
+_________________________________________________________________
+
+Server upload path:
+_________________________________________________________________
+
+Issues encountered:
+_________________________________________________________________
+_________________________________________________________________
+_________________________________________________________________
+
+═══════════════════════════════════════════════════════════════
+
+Print this checklist and check off items as you complete them!
+
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,138 @@
+═══════════════════════════════════════════════════════════════════════════════
+  API STRUCTURE COMPARISON - ABRA LOGISTICS vs VENDOR APP
+═══════════════════════════════════════════════════════════════════════════════
+
+## ABRA LOGISTICS APP STRUCTURE
+
+### Backend Type: DUAL SYSTEM
+1. **C# .NET API** (abra_logistics_api/)
+   - Used for delivery agent login
+   - Location: abra_logistics/abra_logistics_api/Controllers/AuthController.cs
+   - Endpoint: POST /api/auth/login
+   - Uses JWT tokens
+   - Database: SQL Server
+
+2. **PHP API** (abra_app/api1/)
+   - Used for customer app
+   - Location: abra_app/api1/
+   - Main file: check_role.php
+   - Database: MySQL (royaldxd_abra_crm)
+
+### PHP API Structure (Customer App):
+```
+abra_app/
+├── api1/
+│   ├── check_role.php          ← Main authentication/role check
+│   ├── create_razorpay_order.php
+│   ├── upload_kyc_documents.php
+│   ├── admin/
+│   │   └── (admin endpoints)
+│   └── customer/
+│       └── (customer endpoints)
+├── dashboard/
+│   └── (admin dashboard files)
+└── server_files/
+    └── (backup/reference files)
+```
+
+### API URL Pattern:
+- Base URL: https://crm.abra-logistic.com/api1/
+- Authentication: Firebase UID based (no password)
+- Role Check: check_role.php
+- Database: royaldxd_abra_crm
+- Credentials: royaldxd_user / meg_layout312
+
+═══════════════════════════════════════════════════════════════════════════════
+
+## VENDOR APP STRUCTURE
+
+### Backend Type: PHP ONLY
+Location: vendor_app/server_php/api1_vendor/
+
+### API Structure:
+```
+vendor_app/
+└── server_php/
+    └── api1_vendor/
+        ├── check_role.php              ← Role management
+        ├── update_role.php
+        ├── get_kyc_status.php
+        ├── submit_kyc.php
+        ├── check_kyc_exists.php
+        ├── get_notifications.php
+        ├── mark_notification_read.php
+        ├── add_vehicle.php
+        ├── get_vehicle.php
+        ├── update_vehicle.php
+        ├── delete_vehicle.php
+        ├── driver_login.php            ← Driver authentication
+        ├── get_driver_orders.php
+        ├── update_order_status.php
+        └── update_driver_location.php
+```
+
+### API URL Pattern:
+- Base URL: https://crm.abra-logistic.com/api1/vendor/
+- Authentication: Firebase UID based (vendors)
+- Driver Login: Username/Password based (drivers)
+- Database: royaldxd_abra_crm (SAME as customer app)
+- Credentials: royaldxd_user / meg_layout312 (SAME)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+## KEY DIFFERENCES
+
+### 1. AUTHENTICATION METHODS
+
+**Abra Logistics (Delivery Agent):**
+- Uses C# .NET API with JWT tokens
+- Endpoint: POST /api/auth/login
+- Request: { "userid": "username", "password": "password" }
+- Response: { "accessToken": "...", "refreshToken": "...", "user": {...} }
+
+**Abra Customer App:**
+- Uses PHP API with Firebase UID
+- Endpoint: POST /api1/check_role.php
+- Request: { "firebase_uid": "...", "email": "...", "name": "..." }
+- Response: { "status": "success", "role": "customer", "name": "...", "email": "..." }
+
+**Vendor App (Vendors):**
+- Uses PHP API with Firebase UID (SAME as customer app)
+- Endpoint: POST /api1/vendor/check_role.php
+- Request: { "firebase_uid": "...", "email": "...", "name": "..." }
+- Response: { "status": "success", "role": "vendor", "name": "...", "email": "..." }
+
+**Vendor App (Drivers):**
+- Uses PHP API with Username/Password
+- Endpoint: POST /api1/vendor/driver_login.php
+- Request: { "driver_username": "...", "driver_password": "..." }
+- Response: { "status": "success", "vehicle_id": "...", "driver_name": "...", "vehicle_number": "..." }
+
+### 2. DATABASE STRUCTURE
+
+**SAME DATABASE FOR ALL APPS:**
+- Database: royaldxd_abra_crm
+- User: royaldxd_user
+- Password: meg_layout312
+
+**Tables:**
+- app_users (customer & vendor users)
+- customer_kyc (customer KYC data)
+- vendor_kyc (vendor KYC data)
+- vehicles (vendor vehicles)
+- customer_orders (orders - SHARED with Abra Logistics)
+- notifications (all notifications)
+
+### 3. FILE ORGANIZATION
+
+**Abra Customer App:**
+- Root level: abra_app/api1/
+- Folder structure: api1/customer/, api1/admin/
+- Dashboard: abra_app/dashboard/
+
+**Vendor App:**
+- Nested: vendor_app/server_php/api1_vendor/
+- All vendor endpoints in one folder
+- Dashboard: vendor_app/dashboard.php (root level)
+
+══════════════

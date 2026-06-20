@@ -1,0 +1,63 @@
+# Upload Vehicle Management Files to Server
+
+## Step 1: Create Database Table
+Upload and run this SQL file on your server:
+📁 vendor_app/server_php/create_vehicles_table.sql
+
+Run it in phpMyAdmin or MySQL:
+```sql
+USE royaldxd_abra_crm;
+-- Then paste the contents of create_vehicles_table.sql
+```
+
+## Step 2: Upload PHP API Files
+Upload these 4 files to your server at:
+https://crm.abra-logistic.com/api1/
+
+Files to upload:
+1. 📁 vendor_app/server_php/api1_vendor/add_vehicle.php
+2. 📁 vendor_app/server_php/api1_vendor/get_vehicles.php
+3. 📁 vendor_app/server_php/api1_vendor/update_vehicle.php
+4. 📁 vendor_app/server_php/api1_vendor/delete_vehicle.php
+
+## Step 3: Test the API
+After uploading, test if the API is working:
+
+Test URL: https://crm.abra-logistic.com/api1/add_vehicle.php
+
+You can test with Postman or browser by visiting:
+https://crm.abra-logistic.com/api1/get_vehicles.php?firebase_uid=test
+
+If you see a JSON response (even if empty), the API is working!
+
+## Step 4: Verify File Permissions
+Make sure the PHP files have correct permissions:
+- Files: 644 (rw-r--r--)
+- Folders: 755 (rwxr-xr-x)
+
+## Quick Upload Commands (if you have SSH access)
+
+```bash
+# Navigate to your server's api1 folder
+cd /path/to/crm.abra-logistic.com/api1/
+
+# Upload the files (use FTP/SFTP client or these commands)
+# Then set permissions
+chmod 644 add_vehicle.php
+chmod 644 get_vehicles.php
+chmod 644 update_vehicle.php
+chmod 644 delete_vehicle.php
+```
+
+## After Upload - Test Again
+1. Restart your Flutter app
+2. Try adding a vehicle
+3. It should work now!
+
+## Current Error Explanation
+The error "connection error" means:
+- The API endpoint doesn't exist yet (404)
+- OR the server is not responding
+- OR there's a CORS issue
+
+Once you upload the PHP files, this error will be resolved.

@@ -1,0 +1,73 @@
+NOTIFICATIONS SYSTEM - FILES TO UPLOAD
+======================================
+
+Upload these files to enable KYC notifications:
+
+NEW FILES:
+----------
+1. vendor_app/server_php/api1_vendor/create_notification.php
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/api1/vendor/create_notification.php
+   → Purpose: Helper function to create notifications
+
+2. vendor_app/server_php/api1_vendor/update_kyc_status.php
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/api1/vendor/update_kyc_status.php
+   → Purpose: Admin endpoint to approve/reject KYC with notifications
+
+MODIFIED FILES:
+---------------
+3. vendor_app/server_php/api1_vendor/upload_kyc_documents_FINAL.php
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/api1/vendor/upload_kyc_documents.php
+   → Changes: Now creates notification when KYC is submitted
+
+4. vendor_app/server_php/api1_vendor/get_notifications.php
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/api1/vendor/get_notifications.php
+   → Changes: Fixed duplicate try-catch syntax error
+
+5. vendor_app/server_php/api1_vendor/mark_notification_read.php
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/api1/vendor/mark_notification_read.php
+   → Changes: Fixed duplicate try-catch syntax error
+
+APP FILES (Rebuild Flutter App):
+=================================
+6. vendor_app/lib/screens/vendor/notifications_screen.dart
+   → Changes: Enhanced UI with gradient cards and better design
+
+Run: flutter build apk
+Or: flutter build appbundle
+
+TESTING AFTER UPLOAD:
+=====================
+
+1. Test Notification Creation:
+   - Submit KYC from app
+   - Go to Notifications screen
+   - Should see "📋 KYC Submitted Successfully"
+
+2. Test Admin Approval:
+   - Admin approves KYC in admin panel
+   - Vendor checks notifications
+   - Should see "✅ KYC Verified Successfully!"
+
+3. Test Admin Rejection:
+   - Admin rejects KYC with reason
+   - Vendor checks notifications
+   - Should see "❌ KYC Verification Failed" with reason
+
+4. Test API Endpoints:
+   https://crm.abra-logistic.com/api1/vendor/get_notifications.php
+   https://crm.abra-logistic.com/api1/vendor/create_notification.php
+   https://crm.abra-logistic.com/api1/vendor/update_kyc_status.php
+
+ADMIN PANEL:
+============
+The admin panel (admin_kyc_panel.html) already uses the correct endpoint.
+No changes needed - it will automatically work with the new update_kyc_status.php
+
+NOTIFICATION FLOW:
+==================
+1. Vendor submits KYC → Notification created automatically
+2. Admin approves/rejects → Notification sent to vendor
+3. Vendor opens app → Sees notification in Notifications screen
+4. Vendor opens Notifications → All marked as read automatically
+
+See NOTIFICATIONS_SYSTEM_COMPLETE.md for full documentation.

@@ -1,0 +1,179 @@
+🔧 COMMANDS TO RUN ON YOUR SERVER (as root)
+================================================
+
+STEP 1: Find the correct web server user
+-----------------------------------------
+Run this command to see what user owns the other PHP files:
+
+ls -la /home/royaldxd/crm.abra-logistic.com/api1/vendor/
+
+Look at the owner of files like "check_kyc_exists.php" or "submit_kyc.php"
+It will show something like: "apache apache" or "nobody nobody" or "royaldxd royaldxd"
+
+
+STEP 2: Create get_notifications.php on the server
+---------------------------------------------------
+Run these commands (copy-paste the entire block):
+
+cd /home/royaldxd/crm.abra-logistic.com/api1/vendor/
+
+cat > get_notifications.php << 'ENDOFFILE'
+<?php
+/**
+ * Get Vendor Notifications
+ * Returns all notifications for a vendor
+ */
+
+// CORS headers MUST be first, before any other code
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization');
+header('Access-Control-Max-Age: 86400');
+header('Content-Type: application/json');
+
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit(0);
+}
+
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+
+// Database connection
+$host = 'localhost';
+$dbname = 'royaldxd_abra_crm';
+$username = 'royaldxd_user';
+$password = 'meg_layout312';
+
+try {
+    $con = new mysqli($host, $username, $password, $dbname);
+    
+    if ($con->connect_error) {
+        echo json_encode(['status' => 'error', 'message' => 'Database connection failed']);
+        exit();
+    }
+    
+    $con->set_charset('utf8mb4');
+    
+} catch (Exception $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Server error: ' . $e->getMessage()]);
+    exit();
+}
+
+// Get POST data
+$data = json_decode(file_get_contents('php://input'), true);
+
+if (!$data || !isset($data['firebase_uid'])) {
+    echo json_encode(['status' => 'error', 'message' => 'Firebase UID is required']);
+    exit();
+}
+
+$firebase_uid = trim($data['firebase_uid']);
+$limit = isset($data['limit']) ? intval($data['limit']) : 50;
+$offset = isset($data['offset']) ? intval($data['offset']) : 0;
+
+// Get notifications
+$stmt = mysqli_prepare($con, "
+    SELECT 
+        id, firebase_uid, type, title, message, 
+        is_read, created_at
+    FROM notifications 
+    WHERE firebase_uid = ?
+    ORDER BY created_at DESC
+    LIMIT ? OFFSET ?
+");
+
+mysqli_stmt_bind_param($stmt, 'sii', $firebase_uid, $limit, $offset);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+$notifications = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $notifications[] = [
+        'id' => $row['id'],
+        'type' => $row['type'],
+        'title' => $row['title'],
+        'message' => $row['message'],
+        'is_read' => (bool)$row['is_read'],
+        'created_at' => $row['created_at']
+    ];
+}
+
+mysqli_stmt_close($stmt);
+
+// Get unread count
+$count_stmt = mysqli_prepare($con, "SELECT COUNT(*) as unread_count FROM notifications WHERE firebase_uid = ? AND is_read = 0");
+mysqli_stmt_bind_param($count_stmt, 's', $firebase_uid);
+mysqli_stmt_execute($count_stmt);
+$count_result = mysqli_stmt_get_result($count_stmt);
+$count_row = mysqli_fetch_assoc($count_result);
+$unread_count = $count_row['unread_count'];
+mysqli_stmt_close($count_stmt);
+
+echo json_encode([
+    'status' => 'success',
+    'notifications' => $notifications,
+    'unread_count' => $unread_count,
+    'total' => count($notifications)
+]);
+
+mysqli_close($con);
+ENDOFFILE
+
+
+STEP 3: Set correct permissions
+--------------------------------
+chmod 644 get_notifications.php
+
+
+STEP 4: Set correct owner (use the user you found in STEP 1)
+-------------------------------------------------------------
+# If the owner is "apache":
+chown apache:apache get_notifications.php
+
+# OR if the owner is "nobody":
+chown nobody:nobody get_notifications.php
+
+# OR if the owner is "royaldxd":
+chown royaldxd:royaldxd get_notifications.php
+
+
+STEP 5: Fix mark_notification_read.php permissions too
+-------------------------------------------------------
+chmod 644 mark_notification_read.php
+
+# Use same owner as above:
+chown apache:apache mark_notification_read.php
+# OR
+chown nobody:nobody mark_notification_read.php
+# OR
+chown royaldxd:royaldxd mark_notification_read.php
+
+
+STEP 6: Verify files exist
+---------------------------
+ls -la /home/royaldxd/crm.abra-logistic.com/api1/vendor/ | grep notification
+
+You should see:
+- get_notifications.php (644 permissions)
+- mark_notification_read.php (644 permissions)
+- create_notification.php
+- Other notification files
+
+
+STEP 7: Test in browser
+------------------------
+Visit: https://crm.abra-logistic.com/api1/vendor/check_file_version.php
+
+You should see:
+✅ get_notifications.php exists
+✅ All CORS headers present
+
+
+STEP 8: Test in app
+--------------------
+Open your vendor app and check:
+- Red notification badge should show "1"
+- Click notifications to see the test notification

@@ -1,0 +1,55 @@
+✅ VEHICLE SYSTEM - FIXED FILES TO UPLOAD
+==========================================
+
+All vehicle API files have been fixed to:
+- Use correct database connection (mysqli with royaldxd_abra_crm)
+- Match the pattern of working KYC files
+- Work with actual table structure (no vendor_location field)
+
+📤 UPLOAD THESE FILES:
+----------------------
+
+1. server_php/api1_vendor/test_add_vehicle.php
+   → public_html/server_php/api1_vendor/test_add_vehicle.php
+   
+2. server_php/api1_vendor/add_vehicle.php
+   → public_html/server_php/api1_vendor/add_vehicle.php
+   
+3. server_php/api1_vendor/get_vehicles.php
+   → public_html/server_php/api1_vendor/get_vehicles.php
+   
+4. server_php/api1_vendor/update_vehicle.php
+   → public_html/server_php/api1_vendor/update_vehicle.php
+   
+5. server_php/api1_vendor/delete_vehicle.php
+   → public_html/server_php/api1_vendor/delete_vehicle.php
+
+✅ WHAT WAS FIXED:
+------------------
+- Changed from PDO to mysqli (matching working files)
+- Using correct database: royaldxd_abra_crm
+- Using correct credentials: royaldxd_user / meg_layout312
+- Removed vendor_location field (not in actual table)
+- Added proper error handling
+- Added proper validation
+- All files now follow the same pattern as working KYC APIs
+
+🧪 TEST AFTER UPLOAD:
+---------------------
+1. Test table structure:
+   https://crm.abra-logistic.com/server_php/api1_vendor/test_add_vehicle.php
+   
+   Should show: "vehicles table exists and is ready"
+
+2. Then test from Flutter app:
+   - Add a vehicle
+   - View vehicles list
+   - Update a vehicle
+   - Delete a vehicle
+
+📊 DATABASE INFO:
+-----------------
+Database: royaldxd_abra_crm
+Table: vehicles
+Total vehicles: 0 (ready for data)
+All required columns present ✓

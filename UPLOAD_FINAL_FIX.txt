@@ -1,0 +1,32 @@
+FINAL FIX - FILES TO UPLOAD
+============================
+
+CRITICAL SERVER FILE:
+---------------------
+1. vendor_app/server_php/api1_vendor/upload_kyc_documents.php
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/api1/vendor/upload_kyc_documents.php
+   → This REPLACES the old FINAL version
+   → Now does ACTUAL file upload instead of mock paths
+
+APP FILE (Rebuild Required):
+-----------------------------
+2. vendor_app/lib/screens/vendor/vendor_dashboard.dart
+   → Notification button now works
+   → Run: flutter build apk
+
+WHAT'S FIXED:
+=============
+✅ Documents now actually upload to server
+✅ Admin can view documents (no more 404 errors)
+✅ Notification bell button now works
+✅ Files saved to: /home/royaldxd/crm.abra-logistic.com/uploads/vendor_kyc_documents/{uid}/
+
+TESTING:
+========
+1. Submit KYC from app with documents
+2. Check admin panel - click document links
+3. Documents should open (not 404)
+4. Click notification bell in app
+5. Should open notifications screen
+
+See FINAL_COMPLETE_FIX.md for full details.

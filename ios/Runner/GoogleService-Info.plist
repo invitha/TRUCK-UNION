@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>907690538063-mf6u35c75cs0lu2m95nhj0cmhs8djrki.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.907690538063-mf6u35c75cs0lu2m95nhj0cmhs8djrki</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>907690538063-ui5ta0jna98vdg521gd3f1snmma7mfsl.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCVV1LaY05L0304a9pV7dtjaJ2khV4PULQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>907690538063</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.abraglobal.vendor</string>
+	<key>PROJECT_ID</key>
+	<string>truck-union-vendor</string>
+	<key>STORAGE_BUCKET</key>
+	<string>truck-union-vendor.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:907690538063:ios:8d87796baecf7f79d9263a</string>
+</dict>
+</plist>

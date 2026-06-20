@@ -1,0 +1,66 @@
+═══════════════════════════════════════════════════════════════
+  UPLOAD THESE 2 FILES - CORS HEADERS FIXED
+═══════════════════════════════════════════════════════════════
+
+I fixed the CORS headers to handle preflight OPTIONS requests correctly.
+
+═══════════════════════════════════════════════════════════════
+
+📁 UPLOAD THESE 2 FILES (REPLACE OLD VERSIONS):
+
+1. get_notifications.php
+   FROM: vendor_app/server_php/api1_vendor/get_notifications.php
+   TO:   /home/royaldxd/crm.abra-logistic.com/api1/vendor/get_notifications.php
+   ⚠️ REPLACE the existing file!
+
+2. mark_notification_read.php
+   FROM: vendor_app/server_php/api1_vendor/mark_notification_read.php
+   TO:   /home/royaldxd/crm.abra-logistic.com/api1/vendor/mark_notification_read.php
+   ⚠️ REPLACE the existing file!
+
+═══════════════════════════════════════════════════════════════
+
+✅ WHAT I FIXED:
+
+Changed from:
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+To:
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization');
+header('Access-Control-Max-Age: 86400');
+header('Content-Type: application/json');
+
+Key changes:
+1. CORS headers FIRST (before Content-Type)
+2. Added GET method
+3. Added Accept and Authorization headers
+4. Added Max-Age for caching preflight
+5. Changed exit() to exit(0) for OPTIONS
+
+═══════════════════════════════════════════════════════════════
+
+🧪 AFTER UPLOAD:
+
+1. Open your vendor app
+2. Hot reload (press 'r')
+3. Go to dashboard
+4. You should see:
+   ✅ Red badge with "1"
+   ✅ No CORS errors
+   ✅ Notification loads
+
+═══════════════════════════════════════════════════════════════
+
+🎯 WHY THIS FIXES IT:
+
+The app sends POST with JSON (Content-Type: application/json).
+This triggers a CORS preflight OPTIONS request.
+The old headers didn't properly handle the preflight.
+The new headers handle it correctly.
+
+═══════════════════════════════════════════════════════════════

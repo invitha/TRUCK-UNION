@@ -1,0 +1,50 @@
+FILES TO UPLOAD TO SERVER
+========================
+
+Upload these files to fix KYC status display and document viewing:
+
+1. vendor_app/server_php/api1_vendor/get_kyc_status.php
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/api1/vendor/get_kyc_status.php
+   → Fixed: Removed duplicate try-catch syntax error
+
+2. vendor_app/admin_kyc_panel.html
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/admin_kyc_panel.html
+   → Fixed: Document links now use serve_kyc_image.php endpoint
+
+3. vendor_app/server_php/serve_kyc_image.php
+   → Upload to: /home/royaldxd/crm.abra-logistic.com/serve_kyc_image.php
+   → Status: Already correct, but upload to ensure it's on server
+
+APP FILES (Rebuild Flutter App):
+================================
+
+After uploading server files, rebuild the Flutter app with these changes:
+
+1. vendor_app/lib/screens/vendor/kyc_verification_screen.dart
+   → Reloads KYC status after submission
+
+2. vendor_app/lib/screens/vendor/my_vehicles_screen.dart
+   → Shows different banners for each KYC status
+
+Run: flutter build apk
+Or: flutter build appbundle
+
+TESTING AFTER UPLOAD:
+=====================
+
+1. Test API endpoint:
+   https://crm.abra-logistic.com/api1/vendor/get_kyc_status.php
+   (Should not return 500 error)
+
+2. Test document serving:
+   https://crm.abra-logistic.com/serve_kyc_image.php?uid=TEST_UID&file=test.jpg
+   (Should return 404 "File not found", not PHP error)
+
+3. Test admin panel:
+   https://crm.abra-logistic.com/admin_kyc_panel.html
+   (Click document links - should open images)
+
+4. Test app:
+   - Submit KYC
+   - Check KYC screen shows "Verification in Progress"
+   - Check My Fleet shows "KYC Under Review"

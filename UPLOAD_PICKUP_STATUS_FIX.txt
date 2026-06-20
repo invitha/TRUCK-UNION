@@ -1,0 +1,35 @@
+CRITICAL FIX: Re-upload pickup_status.php to server (OVERWRITE existing)
+=========================================================================
+
+THE BUG:
+  pickup_status.php exists on server but it's the WRONG version —
+  it contains delivery validation (receiverName + receiverPhoneNumber required).
+  The correct pickup-only version must OVERWRITE it.
+
+WHAT TO UPLOAD (1 file):
+  LOCAL:   vendor_app/server_php/api1_vendor/pickup_status.php
+  SERVER:  /api1/vendor/pickup_status.php   ← OVERWRITE the existing file
+
+HOW TO VERIFY IT WORKED:
+  Visit in browser (GET request):
+  https://crm.abra-logistic.com/api1/vendor/pickup_status.php
+
+  You should see:
+  {
+    "file": "pickup_status.php",
+    "version": "2.0",
+    "type": "pickup",
+    "status": "ok"
+  }
+
+  If you see version 2.0 → upload was successful ✅
+  If you see anything else → old file still there, re-upload ❌
+
+ALSO FIXED (already in Flutter code):
+  - proof_of_delivery_screen.dart: vehicle_id null safety (prevents crash)
+  - api_service.dart: guard that detects wrong-endpoint response
+
+CHANGES SUMMARY:
+  1. server_php/api1_vendor/pickup_status.php  ← UPLOAD THIS (overwrites server)
+  2. lib/screens/driver/proof_of_delivery_screen.dart  ← already updated
+  3. lib/services/api_service.dart  ← already updated

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "907690538063",
+    "project_id": "truck-union-vendor",
+    "storage_bucket": "truck-union-vendor.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907690538063:android:8cc712caefc3cc3ad9263a",
+        "android_client_info": {
+          "package_name": "com.abraglobal.vendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907690538063-ui5ta0jna98vdg521gd3f1snmma7mfsl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abraglobal.vendor",
+            "certificate_hash": "a1cbad69a4b41fd09a9b92e5403180517b44c745"
+          }
+        },
+        {
+          "client_id": "907690538063-rj6tc52deon3u31vdeima26d58innnqo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXjpjjSHDmA4RefMWFKKPJnIVWQytuR8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907690538063-rj6tc52deon3u31vdeima26d58innnqo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "907690538063-mf6u35c75cs0lu2m95nhj0cmhs8djrki.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.abraglobal.vendor"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,59 @@
+UPLOAD THESE FILES TO SERVER - DRIVER SYSTEM
+============================================
+
+## CRITICAL: Upload these PHP files to make driver dashboard work
+
+Upload to: crm.abra-logistic.com/api1/vendor/
+
+1. get_driver_orders.php
+2. update_order_status.php  
+3. update_driver_location.php
+4. get_all_vehicles.php
+
+## ALSO UPLOAD:
+
+Upload to: crm.abra-logistic.com/
+- internal_vehicles_dashboard.html
+
+## RUN THIS SQL IN PHPMYADMIN:
+
+Database: royaldxd_abra_crm
+
+File: add_location_tracking_columns.sql
+
+SQL:
+```sql
+ALTER TABLE `vehicles` 
+ADD COLUMN `is_online` TINYINT(1) DEFAULT 0 AFTER `status`,
+ADD COLUMN `last_latitude` DECIMAL(10, 8) NULL AFTER `is_online`,
+ADD COLUMN `last_longitude` DECIMAL(11, 8) NULL AFTER `last_latitude`,
+ADD COLUMN `last_location_update` TIMESTAMP NULL AFTER `last_longitude`,
+ADD COLUMN `location_address` VARCHAR(500) NULL AFTER `last_location_update`,
+ADD INDEX `idx_is_online` (`is_online`),
+ADD INDEX `idx_last_location_update` (`last_location_update`);
+```
+
+## CURRENT ERROR:
+
+The error "connection errored" means the PHP files are not on the server yet.
+
+After uploading, the driver dashboard will work and show:
+- Pickup Orders tab
+- Delivery Orders tab  
+- Order details
+- Mark as Picked Up / Delivered buttons
+
+## TEST AFTER UPLOAD:
+
+1. Login as driver
+2. Should see dashboard with 2 tabs
+3. Orders will load (if any exist in customer_orders table)
+4. Can mark orders as picked up or delivered
+
+## LOCATION TRACKING (OPTIONAL - FOR LATER):
+
+To enable location tracking:
+1. Uncomment location code in driver_dashboard.dart
+2. Run: flutter pub get
+3. Driver location will update every 30 seconds
+4. View in internal_vehicles_dashboard.html

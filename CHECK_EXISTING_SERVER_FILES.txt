@@ -1,0 +1,28 @@
+# Check What's Already on Your Server
+
+## Step 1: Check if these files exist on your server
+Visit these URLs to see if they already exist:
+
+1. https://crm.abra-logistic.com/api1/serve_kyc_document.php
+2. https://crm.abra-logistic.com/api1/serve_kyc_image.php
+
+## Step 2: If they exist, you just need to REPLACE them
+- serve_kyc_document.php (REPLACE with updated version)
+- serve_kyc_image.php (REPLACE with updated version)
+
+## Step 3: If they DON'T exist, UPLOAD them
+- Upload serve_kyc_document.php as NEW file to /api1/
+- Upload serve_kyc_image.php as NEW file to /api1/
+
+## What files to use:
+- From: vendor_app/server_php/serve_kyc_document.php 
+- From: vendor_app/server_php/serve_kyc_image.php
+
+## The admin panels are already updated:
+- driver_kyc_admin_panel.php (already has correct URLs)
+- manage_driver_kyc.php (already has correct URLs)
+
+## Summary:
+✅ serve_kyc_document.php = MODIFIED EXISTING FILE (just upload it)
+✅ serve_kyc_image.php = MODIFIED EXISTING FILE (just upload it)  
+✅ Admin panels = ALREADY UPDATED (just upload them)

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRUCK UNION - Vendor KYC Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #0D2E6E;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #64748B;
+            font-size: 14px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #64748B;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0D2E6E;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .filters select {
+            padding: 10px 16px;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .kyc-list {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .kyc-item {
+            padding: 24px;
+            border-bottom: 1px solid #E2E8F0;
+            transition: background 0.2s;
+        }
+
+        .kyc-item:hover {
+            background: #F8FAFF;
+        }
+
+        .kyc-item:last-child {
+            border-bottom: none;
+        }
+
+        .kyc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .kyc-info h3 {
+            font-size: 18px;
+            color: #0D2E6E;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .kyc-info p {
+            font-size: 14px;
+            color: #64748B;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-submitted {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .status-verified {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-rejected {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .kyc-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .detail-item {
+            font-size: 13px;
+        }
+
+        .detail-item strong {
+            color: #0D2E6E;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .detail-item span {
+            color: #64748B;
+        }
+
+        .documents {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .doc-link {
+            padding: 8px 16px;
+            background: #F1F5F9;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #0D2E6E;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .doc-link:hover {
+            background: #E2E8F0;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-approve {
+            background: #10B981;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #059669;
+        }
+
+        .btn-reject {
+            background: #EF4444;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #DC2626;
+        }
+
+        .btn-revoke {
+            background: #F59E0B;
+            color: white;
+        }
+
+        .btn-revoke:hover {
+            background: #D97706;
+        }
+
+        .btn-view {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #2563EB;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #64748B;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748B;
+        }
+
+        .business-badge, .individual-badge {
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .business-badge strong, .individual-badge strong {
+            color: #0D2E6E;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚛 TRUCK UNION - Vendor KYC Admin Panel</h1>
+            <p>Review and approve vendor KYC submissions</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Pending Review</h3>
+                <div class="number" id="stat-pending">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Submitted</h3>
+                <div class="number" id="stat-submitted">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Verified</h3>
+                <div class="number" id="stat-verified">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Rejected</h3>
+                <div class="number" id="stat-rejected">0</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <select id="filter-status" onchange="filterKYC()">
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="submitted" selected>Submitted (Needs Review)</option>
+                <option value="verified">Verified</option>
+                <option value="rejected">Rejected</option>
+            </select>
+            <select id="filter-type" onchange="filterKYC()">
+                <option value="all">All Types</option>
+                <option value="individual">Individual</option>
+                <option value="business">Business</option>
+            </select>
+        </div>
+
+        <div class="kyc-list" id="kyc-list">
+            <div class="loading">Loading KYC submissions...</div>
+        </div>
+    </div>
+
+    <!-- Modal for viewing full details -->
+    <div class="modal" id="detailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>KYC Details</h2>
+                <button class="close-modal" onclick="closeModal()">×</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://crm.abra-logistic.com/api1/vendor';
+        let allKYCs = [];
+
+        // Load KYC submissions
+        async function loadKYCs() {
+            try {
+                const response = await fetch(`${API_BASE}/get_all_kyc.php`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    allKYCs = data.kyc_submissions || [];
+                    updateStats();
+                    filterKYC();
+                } else {
+                    showEmpty('Failed to load KYC submissions');
+                }
+            } catch (error) {
+                console.error('Error loading KYCs:', error);
+                showEmpty('Error loading data. Please refresh the page.');
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const stats = {
+                pending: 0,
+                submitted: 0,
+                verified: 0,
+                rejected: 0
+            };
+
+            allKYCs.forEach(kyc => {
+                if (stats.hasOwnProperty(kyc.kyc_status)) {
+                    stats[kyc.kyc_status]++;
+                }
+            });
+
+            document.getElementById('stat-pending').textContent = stats.pending;
+            document.getElementById('stat-submitted').textContent = stats.submitted;
+            document.getElementById('stat-verified').textContent = stats.verified;
+            document.getElementById('stat-rejected').textContent = stats.rejected;
+        }
+
+        // Filter KYC submissions
+        function filterKYC() {
+            const statusFilter = document.getElementById('filter-status').value;
+            const typeFilter = document.getElementById('filter-type').value;
+
+            let filtered = allKYCs;
+
+            if (statusFilter !== 'all') {
+                filtered = filtered.filter(kyc => kyc.kyc_status === statusFilter);
+            }
+
+            if (typeFilter !== 'all') {
+                filtered = filtered.filter(kyc => kyc.account_type === typeFilter);
+            }
+
+            renderKYCs(filtered);
+        }
+
+        // Render KYC list
+        function renderKYCs(kycs) {
+            const container = document.getElementById('kyc-list');
+
+            if (kycs.length === 0) {
+                showEmpty('No KYC submissions found');
+                return;
+            }
+
+            container.innerHTML = kycs.map(kyc => `
+                <div class="kyc-item">
+                    <div class="kyc-header">
+                        <div class="kyc-info">
+                            <h3>${kyc.name || 'N/A'}</h3>
+                            <p>${kyc.email || 'N/A'} • ${kyc.phone || 'N/A'}</p>
+                        </div>
+                        <span class="status-badge status-${kyc.kyc_status}">${kyc.kyc_status}</span>
+                    </div>
+
+                    <div class="kyc-details">
+                        <div class="detail-item">
+                            <strong>Account Type</strong>
+                            <span>${kyc.account_type === 'business' ? '🏢 Business' : '👤 Individual'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Aadhaar</strong>
+                            <span>${kyc.aadhaar_number || 'N/A'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>PAN</strong>
+                            <span>${kyc.pan_number || 'N/A'}</span>
+                        </div>
+                        ${kyc.account_type === 'business' ? `
+                        <div class="detail-item">
+                            <strong>Company Name</strong>
+                            <span>${kyc.company_name || 'N/A'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>GST Number</strong>
+                            <span>${kyc.gst_number || 'N/A'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Business Address</strong>
+                            <span>${kyc.address || 'N/A'}</span>
+                        </div>
+                        ` : ''}
+                        <div class="detail-item">
+                            <strong>Submitted On</strong>
+                            <span>${new Date(kyc.created_at).toLocaleString()}</span>
+                        </div>
+                    </div>
+
+                    ${kyc.account_type === 'business' ? `
+                    <div class="business-badge">
+                        <strong>🏢 Business Account Details:</strong>
+                        <div style="margin-top: 8px; padding: 12px; background: #F0F9FF; border-radius: 8px; border-left: 4px solid #3B82F6;">
+                            <div style="margin-bottom: 6px;"><strong>Company:</strong> ${kyc.company_name || 'N/A'}</div>
+                            <div style="margin-bottom: 6px;"><strong>GST:</strong> ${kyc.gst_number || 'N/A'}</div>
+                            <div><strong>Address:</strong> ${kyc.address || 'N/A'}</div>
+                        </div>
+                    </div>
+                    ` : `
+                    <div class="individual-badge">
+                        <strong>👤 Individual Account</strong>
+                        <div style="margin-top: 8px; padding: 12px; background: #F0FDF4; border-radius: 8px; border-left: 4px solid #10B981;">
+                            <div>Personal account - No business details required</div>
+                        </div>
+                    </div>
+                    `}
+
+                    <div class="documents">
+                        ${kyc.aadhaar_doc ? `<a href="https://crm.abra-logistic.com/serve_kyc_image.php?uid=${kyc.firebase_uid}&file=${kyc.aadhaar_doc.split('/').pop()}" target="_blank" class="doc-link">📄 Aadhaar</a>` : ''}
+                        ${kyc.pan_doc ? `<a href="https://crm.abra-logistic.com/serve_kyc_image.php?uid=${kyc.firebase_uid}&file=${kyc.pan_doc.split('/').pop()}" target="_blank" class="doc-link">📄 PAN</a>` : ''}
+                        ${kyc.photo_doc ? `<a href="https://crm.abra-logistic.com/serve_kyc_image.php?uid=${kyc.firebase_uid}&file=${kyc.photo_doc.split('/').pop()}" target="_blank" class="doc-link">📷 Photo</a>` : ''}
+                        ${kyc.gst_doc ? `<a href="https://crm.abra-logistic.com/serve_kyc_image.php?uid=${kyc.firebase_uid}&file=${kyc.gst_doc.split('/').pop()}" target="_blank" class="doc-link">📄 GST</a>` : ''}
+                        ${kyc.address_doc ? `<a href="https://crm.abra-logistic.com/serve_kyc_image.php?uid=${kyc.firebase_uid}&file=${kyc.address_doc.split('/').pop()}" target="_blank" class="doc-link">📄 Address Proof</a>` : ''}
+                        ${kyc.bank_account_photo ? `<a href="https://crm.abra-logistic.com/serve_kyc_image.php?uid=${kyc.firebase_uid}&file=${kyc.bank_account_photo.split('/').pop()}" target="_blank" class="doc-link">🏦 Bank Account</a>` : ''}
+                    </div>
+
+                    <div class="actions">
+                        ${kyc.kyc_status === 'submitted' ? `
+                            <button class="btn btn-approve" onclick="updateKYCStatus('${kyc.firebase_uid}', 'verified')">✓ Approve</button>
+                            <button class="btn btn-reject" onclick="promptReject('${kyc.firebase_uid}')">✗ Reject</button>
+                        ` : ''}
+                        ${kyc.kyc_status === 'verified' ? `
+                            <button class="btn btn-revoke" onclick="promptRevoke('${kyc.firebase_uid}')">⚠️ Revoke</button>
+                        ` : ''}
+                        ${kyc.kyc_status === 'rejected' ? `
+                            <button class="btn btn-approve" onclick="updateKYCStatus('${kyc.firebase_uid}', 'verified')">✓ Re-Approve</button>
+                        ` : ''}
+                        <button class="btn btn-view" onclick="viewDetails('${kyc.firebase_uid}')">👁 View Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Prompt for rejection reason
+        function promptReject(firebaseUid) {
+            const reason = prompt('Enter rejection reason:', 'Documents not clear');
+            if (reason && reason.trim()) {
+                updateKYCStatus(firebaseUid, 'rejected', reason.trim());
+            }
+        }
+
+        // Prompt for revoke reason
+        function promptRevoke(firebaseUid) {
+            const reason = prompt('Enter revoke reason:', 'KYC verification revoked by admin');
+            if (reason && reason.trim()) {
+                updateKYCStatus(firebaseUid, 'rejected', reason.trim());
+            }
+        }
+
+        // Update KYC status
+        async function updateKYCStatus(firebaseUid, newStatus, reason = null) {
+            let confirmMessage = '';
+            if (newStatus === 'verified') {
+                confirmMessage = 'Are you sure you want to APPROVE this KYC?';
+            } else if (newStatus === 'rejected') {
+                if (reason) {
+                    confirmMessage = `Are you sure you want to ${reason.includes('revoked') ? 'REVOKE' : 'REJECT'} this KYC?\n\nReason: ${reason}`;
+                } else {
+                    confirmMessage = 'Are you sure you want to REJECT this KYC?';
+                }
+            }
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/update_kyc_status.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firebase_uid: firebaseUid,
+                        kyc_status: newStatus,
+                        rejection_reason: reason
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    alert(`KYC ${newStatus === 'verified' ? 'approved' : 'rejected'} successfully!`);
+                    loadKYCs(); // Reload data
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to update KYC status'));
+                }
+            } catch (error) {
+                console.error('Error updating KYC:', error);
+                alert('Error updating KYC status. Please try again.');
+            }
+        }
+
+        // View details in modal
+        function viewDetails(firebaseUid) {
+            const kyc = allKYCs.find(k => k.firebase_uid === firebaseUid);
+            if (!kyc) return;
+
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div class="detail-row">
+                    <label>Account Type</label>
+                    <value>${kyc.account_type === 'business' ? '🏢 Business Account' : '👤 Individual Account'}</value>
+                </div>
+                <div class="detail-row">
+                    <label>Full Name</label>
+                    <value>${kyc.name || 'N/A'}</value>
+                </div>
+                <div class="detail-row">
+                    <label>Email</label>
+                    <value>${kyc.email || 'N/A'}</value>
+                </div>
+                <div class="detail-row">
+                    <label>Phone</label>
+                    <value>${kyc.phone || 'N/A'}</value>
+                </div>
+                <div class="detail-row">
+                    <label>Aadhaar Number</label>
+                    <value>${kyc.aadhaar_number || 'N/A'}</value>
+                </div>
+                <div class="detail-row">
+                    <label>PAN Number</label>
+                    <value>${kyc.pan_number || 'N/A'}</value>
+                </div>
+                ${kyc.account_type === 'business' ? `
+                <div class="detail-row">
+                    <label>Company Name</label>
+                    <value>${kyc.company_name || 'N/A'}</value>
+                </div>
+                <div class="detail-row">
+                    <label>GST Number</label>
+                    <value>${kyc.gst_number || 'N/A'}</value>
+                </div>
+                <div class="detail-row">
+                    <label>Business Address</label>
+                    <value>${kyc.address || 'N/A'}</value>
+                </div>
+                ` : ''}
+                <div class="detail-row">
+                    <label>KYC Status</label>
+                    <value><span class="status-badge status-${kyc.kyc_status}">${kyc.kyc_status}</span></value>
+                </div>
+                <div class="detail-row">
+                    <label>Submitted On</label>
+                    <value>${new Date(kyc.created_at).toLocaleString()}</value>
+                </div>
+                <div class="detail-row">
+                    <label>Firebase UID</label>
+                    <value style="font-size: 12px; word-break: break-all;">${kyc.firebase_uid}</value>
+                </div>
+            `;
+
+            document.getElementById('detailsModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+        }
+
+        // Close modal on outside click
+        document.getElementById('detailsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Show empty state
+        function showEmpty(message) {
+            document.getElementById('kyc-list').innerHTML = `
+                <div class="empty">
+                    <div class="empty-icon">📋</div>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        // Initialize
+        loadKYCs();
+        setInterval(loadKYCs, 30000); // Refresh every 30 seconds
+    </script>
+</body>
+</html>

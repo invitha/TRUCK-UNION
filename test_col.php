@@ -1,0 +1,1 @@
+<?php error_reporting(E_ALL); ini_set('display_errors', 1);  = new mysqli('localhost', 'royaldxd_user', 'meg_layout312', 'royaldxd_abra_crm');  = ->query('SHOW COLUMNS FROM driver_kyc LIKE " vehicle_number\

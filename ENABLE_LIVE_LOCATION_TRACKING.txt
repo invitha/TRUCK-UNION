@@ -1,0 +1,63 @@
+LIVE LOCATION TRACKING - SETUP COMPLETE
+========================================
+
+WHAT WAS DONE:
+--------------
+1. ✅ Added real-time GPS location tracking to driver dashboard
+2. ✅ Driver app now sends live location every 30 seconds
+3. ✅ Location includes GPS coordinates + readable address
+4. ✅ Driver automatically goes ONLINE when logged in
+5. ✅ Driver automatically goes OFFLINE when app is closed
+6. ✅ Added geocoding package for address lookup
+7. ✅ Added location permissions to AndroidManifest
+
+HOW IT WORKS:
+-------------
+- When driver logs in → App requests location permission
+- Every 30 seconds → App sends GPS location to server
+- Location includes: latitude, longitude, and full address
+- Dashboard shows: Real-time location with "View Map" link
+- When driver closes app → Automatically set to offline
+
+FILES MODIFIED:
+---------------
+1. vendor_app/lib/screens/driver/driver_dashboard.dart
+   - Added geolocator and geocoding imports
+   - Added location tracking timer
+   - Sends location every 30 seconds
+   - Sets driver offline on dispose
+
+2. vendor_app/lib/services/api_service.dart
+   - Added setDriverOffline() method
+
+3. vendor_app/pubspec.yaml
+   - Added geocoding: ^3.0.0 package
+
+4. vendor_app/android/app/src/main/AndroidManifest.xml
+   - Added ACCESS_FINE_LOCATION permission
+   - Added ACCESS_COARSE_LOCATION permission
+   - Added ACCESS_BACKGROUND_LOCATION permission
+
+NEXT STEPS:
+-----------
+1. Run: flutter pub get (in vendor_app folder)
+2. Rebuild the app
+3. Install on driver's phone
+4. Driver logs in with credentials
+5. App will ask for location permission → ALLOW
+6. Dashboard will show live location automatically!
+
+TEST IT:
+--------
+1. Driver logs in
+2. Open dashboard: https://crm.abra-logistic.com/dashboard.php
+3. You'll see driver's REAL location (not test location)
+4. Location updates every 30 seconds
+5. Click "View Map" to see on Google Maps
+
+IMPORTANT:
+----------
+- Driver must ALLOW location permission when prompted
+- Location works in background while app is open
+- When driver closes app, status changes to OFFLINE
+- Dashboard auto-refreshes every 30 seconds

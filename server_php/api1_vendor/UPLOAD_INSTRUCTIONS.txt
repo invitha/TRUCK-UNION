@@ -1,0 +1,116 @@
+═══════════════════════════════════════════════════════════════
+  VENDOR API - UPLOAD INSTRUCTIONS
+═══════════════════════════════════════════════════════════════
+
+📁 FOLDER: api1_vendor (this folder)
+📍 UPLOAD TO: /home/royaldxd/crm.abra-logistic.com/api1/vendor/
+
+═══════════════════════════════════════════════════════════════
+  5 FILES TO UPLOAD
+═══════════════════════════════════════════════════════════════
+
+1. ✅ submit_kyc.php
+2. ✅ get_kyc_status.php
+3. ✅ check_kyc_exists.php
+4. ✅ get_notifications.php
+5. ✅ mark_notification_read.php
+
+═══════════════════════════════════════════════════════════════
+  STEP-BY-STEP UPLOAD
+═══════════════════════════════════════════════════════════════
+
+STEP 1: Create Vendor Folder
+-----------------------------
+1. Open cPanel File Manager
+2. Navigate to: /home/royaldxd/crm.abra-logistic.com/api1/
+3. Click "New Folder"
+4. Name: vendor
+5. Click "Create"
+
+STEP 2: Upload Files
+-----------------------------
+1. Open the vendor folder you just created
+2. Click "Upload"
+3. Select all 5 PHP files from this folder
+4. Wait for upload to complete
+5. Close upload window
+
+STEP 3: Set Permissions
+-----------------------------
+1. Select all 5 uploaded files
+2. Click "Permissions"
+3. Set to: 644
+4. Click "Change Permissions"
+
+═══════════════════════════════════════════════════════════════
+  FINAL URLS (After Upload)
+═══════════════════════════════════════════════════════════════
+
+https://crm.abra-logistic.com/api1/vendor/submit_kyc.php
+https://crm.abra-logistic.com/api1/vendor/get_kyc_status.php
+https://crm.abra-logistic.com/api1/vendor/check_kyc_exists.php
+https://crm.abra-logistic.com/api1/vendor/get_notifications.php
+https://crm.abra-logistic.com/api1/vendor/mark_notification_read.php
+
+═══════════════════════════════════════════════════════════════
+  FEATURES INCLUDED
+═══════════════════════════════════════════════════════════════
+
+✅ KYC Submission with validation
+✅ KYC Status retrieval
+✅ Duplicate checking (Aadhaar/PAN/Bank)
+✅ Notification system (get/mark read)
+✅ Automatic notifications on KYC events
+✅ Bank account details support
+✅ Business/Individual account types
+
+═══════════════════════════════════════════════════════════════
+  NOTIFICATIONS SENT AUTOMATICALLY
+═══════════════════════════════════════════════════════════════
+
+Event                  | Notification
+-----------------------|----------------------------------
+KYC Submitted          | ✅ KYC Submitted
+KYC Resubmitted        | 📋 KYC Resubmitted
+KYC Approved (Admin)   | ✓ KYC Verified
+KYC Rejected (Admin)   | KYC Rejected (with reason)
+KYC Revoked (Admin)    | KYC Revoked (with reason)
+
+═══════════════════════════════════════════════════════════════
+  TESTING
+═══════════════════════════════════════════════════════════════
+
+After upload, test by opening in browser:
+
+https://crm.abra-logistic.com/api1/vendor/get_kyc_status.php
+
+Should show: {"status":"error","message":"Firebase UID is required"}
+
+This means the API is working! (It needs POST data)
+
+═══════════════════════════════════════════════════════════════
+  FLUTTER APP
+═══════════════════════════════════════════════════════════════
+
+No changes needed! Flutter app already configured to use:
+https://crm.abra-logistic.com/api1/vendor/
+
+Just upload these files and the app will work automatically!
+
+═══════════════════════════════════════════════════════════════
+  CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+[ ] Created folder: /api1/vendor/
+[ ] Uploaded all 5 PHP files
+[ ] Set permissions to 644
+[ ] Tested API endpoint in browser
+[ ] Submitted test KYC from Flutter app
+[ ] Verified KYC appears in admin panel
+[ ] Checked notifications work
+
+═══════════════════════════════════════════════════════════════
+
+DONE! 🎉 Your vendor API is ready!
+
+═══════════════════════════════════════════════════════════════

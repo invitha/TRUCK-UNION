@@ -1,0 +1,75 @@
+═══════════════════════════════════════════════════════════════
+  UPLOAD THESE 2 FILES NOW - NOTIFICATIONS WILL WORK
+═══════════════════════════════════════════════════════════════
+
+You uploaded test_notifications.php and it works.
+But you DIDN'T upload the actual notification files!
+
+═══════════════════════════════════════════════════════════════
+
+📁 UPLOAD THESE 2 FILES:
+
+1. get_notifications.php
+   FROM: vendor_app/server_php/api1_vendor/get_notifications.php
+   TO:   /home/royaldxd/crm.abra-logistic.com/api1/vendor/get_notifications.php
+
+2. mark_notification_read.php
+   FROM: vendor_app/server_php/api1_vendor/mark_notification_read.php
+   TO:   /home/royaldxd/crm.abra-logistic.com/api1/vendor/mark_notification_read.php
+
+═══════════════════════════════════════════════════════════════
+
+🧪 TEST AFTER UPLOAD:
+
+Open in browser:
+https://crm.abra-logistic.com/api1/vendor/get_notifications.php
+
+You should see JSON (not 404):
+{
+  "status": "error",
+  "message": "Firebase UID required",
+  "notifications": [],
+  "unread_count": 0
+}
+
+═══════════════════════════════════════════════════════════════
+
+✅ AFTER UPLOAD:
+
+1. Open your app
+2. Go to dashboard
+3. You will see:
+   - Red badge with "14" (you have 14 unread notifications)
+   - No more CORS errors
+   - Notifications load correctly
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ IMPORTANT:
+
+Upload to the SAME directory where test_notifications.php is!
+
+If test_notifications.php is at:
+/home/royaldxd/crm.abra-logistic.com/api1/vendor/test_notifications.php
+
+Then upload get_notifications.php to:
+/home/royaldxd/crm.abra-logistic.com/api1/vendor/get_notifications.php
+
+═══════════════════════════════════════════════════════════════
+
+🎯 WHAT WILL HAPPEN:
+
+Before upload:
+- App calls get_notifications.php
+- File doesn't exist (404)
+- Browser blocks request (CORS error)
+- No notifications show
+
+After upload:
+- App calls get_notifications.php
+- File exists and returns JSON
+- App receives 14 unread notifications
+- Red badge shows "14"
+- Notifications display in list
+
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,88 @@
+═══════════════════════════════════════════════════════════════
+  VEHICLE TONNAGE FEATURE - IMPLEMENTATION COMPLETE
+═══════════════════════════════════════════════════════════════
+
+✅ WHAT WAS ADDED:
+- Vehicle tonnage field added to the entire vehicle management system
+- Tonnage options: 1 Ton, 2 Ton, 3 Ton, 5 Ton, 7 Ton, 10 Ton, 12 Ton, 15 Ton, 20 Ton, 25 Ton, 30 Ton, Other (Specify)
+- Dashboard now shows TWO summary tables: one by vehicle size, one by vehicle tonnage
+
+═══════════════════════════════════════════════════════════════
+  FILES TO UPLOAD TO SERVER
+═══════════════════════════════════════════════════════════════
+
+1. DATABASE MIGRATION:
+   📁 vendor_app/server_php/add_tonnage_column.sql
+   
+   ⚠️ RUN THIS SQL FIRST ON YOUR DATABASE:
+   ALTER TABLE `vehicles` ADD COLUMN `vehicle_tonnage` VARCHAR(50) NULL AFTER `vehicle_size_feet`;
+
+2. API ENDPOINT (Updated):
+   📁 vendor_app/server_php/api1_vendor/add_vehicle.php
+   
+3. DASHBOARD (Updated):
+   📁 vendor_app/dashboard.php
+
+═══════════════════════════════════════════════════════════════
+  FLUTTER APP CHANGES (Already Done Locally)
+═══════════════════════════════════════════════════════════════
+
+✅ vendor_app/lib/screens/vendor/add_vehicle_screen.dart
+   - Added tonnage dropdown field
+   - Added validation for tonnage
+   - Sends tonnage to API
+
+═══════════════════════════════════════════════════════════════
+  DEPLOYMENT STEPS
+═══════════════════════════════════════════════════════════════
+
+STEP 1: Run SQL Migration
+------------------------
+1. Go to phpMyAdmin or your database tool
+2. Select database: royaldxd_abra_crm
+3. Run the SQL from: vendor_app/server_php/add_tonnage_column.sql
+4. Verify column was added to vehicles table
+
+STEP 2: Upload PHP Files
+------------------------
+Upload these files to your server:
+- vendor_app/server_php/api1_vendor/add_vehicle.php
+- vendor_app/dashboard.php
+
+STEP 3: Test the System
+------------------------
+1. Open the Flutter app
+2. Go to "Add Vehicle" screen
+3. You should see the new "Vehicle Tonnage" dropdown
+4. Add a vehicle with tonnage selected
+5. Check the dashboard - you should see TWO tables:
+   - Fleet Summary by Vehicle Size (existing)
+   - Fleet Summary by Vehicle Tonnage (NEW)
+
+═══════════════════════════════════════════════════════════════
+  DASHBOARD CHANGES
+═══════════════════════════════════════════════════════════════
+
+The Vendor Summary view now shows:
+
+📦 Fleet Summary by Vehicle Size
+   - Groups vehicles by size (6ft, 7ft, 8ft, 10ft, 12ft)
+   - Shows online/offline counts per size
+   - Grouped by state and vendor
+
+⚖️ Fleet Summary by Vehicle Tonnage (NEW)
+   - Groups vehicles by tonnage (1T, 2T, 3T, 5T, 7T, 10T, 12T, 15T, 20T, 25T, 30T)
+   - Shows online/offline counts per tonnage
+   - Grouped by state and vendor
+   - Color-coded: Green for online, Red for offline
+
+═══════════════════════════════════════════════════════════════
+  NOTES
+═══════════════════════════════════════════════════════════════
+
+- Existing vehicles will have NULL tonnage until updated
+- New vehicles MUST have tonnage selected
+- The tonnage field is required when adding new vehicles
+- Dashboard handles NULL tonnage gracefully (shows as "Unknown")
+
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,86 @@
+═══════════════════════════════════════════════════════════════
+  VENDOR KYC STATUS FLOW (SIMPLIFIED)
+═══════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────┐
+│  VENDOR SUBMITS KYC FROM FLUTTER APP                        │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+                            ↓
+                ┌───────────────────────┐
+                │   STATUS: SUBMITTED   │  ← DEFAULT
+                │   📋 Needs Review     │
+                └───────────────────────┘
+                            ↓
+                            ↓
+        ┌───────────────────────────────────────┐
+        │  ADMIN REVIEWS IN ADMIN PANEL         │
+        │  Tab: "📋 Submitted (Needs Review)"   │
+        └───────────────────────────────────────┘
+                            ↓
+                            ↓
+            ┌───────────────┴───────────────┐
+            ↓                               ↓
+    ┌───────────────┐               ┌───────────────┐
+    │   APPROVE ✓   │               │   REJECT ✗    │
+    └───────────────┘               └───────────────┘
+            ↓                               ↓
+            ↓                               ↓
+┌───────────────────────┐       ┌───────────────────────┐
+│  STATUS: VERIFIED     │       │  STATUS: REJECTED     │
+│  ✅ Approved          │       │  ❌ Rejected          │
+│                       │       │                       │
+│  • Can add vehicles   │       │  • Must resubmit KYC  │
+│  • Can start working  │       │  • Receives reason    │
+│  • Gets notification  │       │  • Gets notification  │
+└───────────────────────┘       └───────────────────────┘
+            ↓                               ↓
+            ↓                               ↓
+    Tab: "✅ Verified"              Tab: "❌ Rejected"
+                                            ↓
+                                            ↓
+                                    ┌───────────────┐
+                                    │  VENDOR CAN   │
+                                    │  RESUBMIT KYC │
+                                    └───────────────┘
+                                            ↓
+                                            ↓
+                                Back to "📋 Submitted"
+
+═══════════════════════════════════════════════════════════════
+  ADMIN PANEL TABS (3 TABS ONLY)
+═══════════════════════════════════════════════════════════════
+
+1. 📋 SUBMITTED (Needs Review)
+   • New KYC submissions
+   • Awaiting admin review
+   • Actions: Approve ✓ | Reject ✗
+
+2. ✅ VERIFIED
+   • Approved KYC records
+   • Vendors can work
+   • Actions: Revoke ⚠ (if needed)
+
+3. ❌ REJECTED
+   • Rejected KYC records
+   • Vendors must resubmit
+   • Actions: None (vendor resubmits)
+
+═══════════════════════════════════════════════════════════════
+  STATUS MEANINGS
+═══════════════════════════════════════════════════════════════
+
+SUBMITTED  = Vendor submitted KYC, waiting for admin review
+VERIFIED   = Admin approved, vendor can add vehicles and work
+REJECTED   = Admin rejected, vendor must fix and resubmit
+
+═══════════════════════════════════════════════════════════════
+  REMOVED STATUS
+═══════════════════════════════════════════════════════════════
+
+❌ PENDING (REMOVED)
+   • Was redundant with SUBMITTED
+   • Caused confusion
+   • No longer used
+
+═══════════════════════════════════════════════════════════════

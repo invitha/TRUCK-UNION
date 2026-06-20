@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Admin Panel Buttons</title>
+    <style>
+        .btn {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-approve { background: #10B981; color: white; }
+        .btn-reject { background: #EF4444; color: white; }
+        .btn-revoke { background: #F59E0B; color: white; }
+        .btn-view { background: #3B82F6; color: white; }
+    </style>
+</head>
+<body>
+    <h2>Test KYC Status Buttons</h2>
+    
+    <h3>Status: submitted</h3>
+    <div id="submitted"></div>
+    
+    <h3>Status: verified</h3>
+    <div id="verified"></div>
+    
+    <h3>Status: rejected</h3>
+    <div id="rejected"></div>
+    
+    <script>
+        const firebase_uid = 'test_uid';
+        
+        // Test submitted status
+        document.getElementById('submitted').innerHTML = `
+            <button class="btn btn-approve" onclick="alert('Approve clicked')">✓ Approve</button>
+            <button class="btn btn-reject" onclick="alert('Reject clicked')">✗ Reject</button>
+            <button class="btn btn-view" onclick="alert('View clicked')">👁 View Details</button>
+        `;
+        
+        // Test verified status
+        document.getElementById('verified').innerHTML = `
+            <button class="btn btn-revoke" onclick="alert('Revoke clicked')">⚠️ Revoke</button>
+            <button class="btn btn-view" onclick="alert('View clicked')">👁 View Details</button>
+        `;
+        
+        // Test rejected status
+        document.getElementById('rejected').innerHTML = `
+            <button class="btn btn-approve" onclick="alert('Re-Approve clicked')">✓ Re-Approve</button>
+            <button class="btn btn-view" onclick="alert('View clicked')">👁 View Details</button>
+        `;
+    </script>
+</body>
+</html>

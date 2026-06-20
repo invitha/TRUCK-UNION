@@ -1,0 +1,23 @@
+COMPLETE DASHBOARD WITH FULL ADDRESS SUPPORT
+=============================================
+
+The dashboard.php file needs the getReadableAddress() function to convert
+GPS coordinates to full readable addresses.
+
+UPLOAD THIS FILE:
+-----------------
+vendor_app/dashboard.php
+
+This file includes:
+1. ✅ getReadableAddress() function - converts GPS to full address
+2. ✅ OpenStreetMap reverse geocoding API integration
+3. ✅ Filters (Status, Size, Type, Search)
+4. ✅ Auto-offline detection (5 minute timeout)
+5. ✅ Grouped tables by vehicle size
+6. ✅ Color-coded online/offline status
+7. ✅ Full detailed addresses
+
+The current dashboard.php in your workspace already has all these features.
+Just upload it to your server and it will work!
+
+URL: https://crm.abra-logistic.com/dashboard.php

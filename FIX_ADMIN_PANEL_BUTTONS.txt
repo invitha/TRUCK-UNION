@@ -1,0 +1,132 @@
+ADMIN PANEL BUTTONS NOT SHOWING - FIX
+======================================
+
+PROBLEM:
+--------
+Revoke and Re-Approve buttons not showing in admin panel
+
+ROOT CAUSE:
+-----------
+The updated admin_kyc_panel.html file has NOT been uploaded to the server yet.
+Server is still using the OLD version without the new buttons.
+
+SOLUTION:
+---------
+Upload the updated admin_kyc_panel.html file to the server.
+
+UPLOAD INSTRUCTIONS:
+====================
+
+1. Open your FTP client or cPanel File Manager
+
+2. Navigate to:
+   /home/royaldxd/crm.abra-logistic.com/
+
+3. Upload this file:
+   vendor_app/admin_kyc_panel.html
+   
+   TO:
+   /home/royaldxd/crm.abra-logistic.com/admin_kyc_panel.html
+
+4. IMPORTANT: Make sure to OVERWRITE the existing file
+
+5. Clear browser cache:
+   - Press Ctrl+Shift+Delete
+   - Select "Cached images and files"
+   - Click "Clear data"
+
+6. Reload admin panel:
+   https://crm.abra-logistic.com/admin_kyc_panel.html
+
+VERIFICATION:
+=============
+
+After uploading, you should see these buttons:
+
+For SUBMITTED status:
+  ✓ Approve (green)
+  ✗ Reject (red)
+  👁 View Details (blue)
+
+For VERIFIED status:
+  ⚠️ Revoke (orange) ← THIS IS NEW
+  👁 View Details (blue)
+
+For REJECTED status:
+  ✓ Re-Approve (green) ← THIS IS NEW
+  👁 View Details (blue)
+
+TROUBLESHOOTING:
+================
+
+If buttons still don't show after upload:
+
+1. Check file was uploaded correctly:
+   - File size should be around 20-25 KB
+   - Check last modified date matches upload time
+
+2. Hard refresh browser:
+   - Windows: Ctrl+F5
+   - Mac: Cmd+Shift+R
+
+3. Try different browser:
+   - Open in incognito/private mode
+   - Try Chrome, Firefox, or Edge
+
+4. Check browser console for errors:
+   - Press F12
+   - Go to Console tab
+   - Look for JavaScript errors
+
+5. Verify file content:
+   - Download the file from server
+   - Search for "btn-revoke" in the file
+   - Should find: class="btn btn-revoke"
+
+6. Check server permissions:
+   - File should have 644 permissions
+   - Run: chmod 644 admin_kyc_panel.html
+
+TEST FILE:
+==========
+Upload TEST_ADMIN_PANEL.html to test if buttons work:
+https://crm.abra-logistic.com/TEST_ADMIN_PANEL.html
+
+This will show all three button states to verify styling works.
+
+EXPECTED BEHAVIOR:
+==================
+
+Status: submitted
+  → Shows Approve + Reject buttons
+  
+Status: verified
+  → Shows Revoke button (orange)
+  → Clicking Revoke changes status to "submitted"
+  → Vendor gets notification
+  
+Status: rejected
+  → Shows Re-Approve button (green)
+  → Clicking Re-Approve changes status to "verified"
+  → Vendor gets notification
+
+CURRENT ISSUE IN SCREENSHOT:
+=============================
+Your screenshot shows:
+- Status badge: "REJECTED" (red)
+- Only button visible: "Delete" (gray)
+- Missing: "✓ Re-Approve" button
+
+This confirms the OLD admin panel is still on the server.
+
+QUICK FIX:
+==========
+1. Upload vendor_app/admin_kyc_panel.html to server
+2. Clear browser cache (Ctrl+Shift+Delete)
+3. Reload page (Ctrl+F5)
+4. Buttons should now appear
+
+If you need help uploading, let me know your hosting method:
+- cPanel File Manager
+- FTP (FileZilla, WinSCP)
+- SSH/Terminal

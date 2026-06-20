@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Driver KYC API Test</title>
+</head>
+<body>
+    <h1>🧪 Driver KYC API Test</h1>
+    <button onclick="testAPI()">Test API</button>
+    <div id="results"></div>
+
+    <script>
+    async function testAPI() {
+        const results = document.getElementById('results');
+        results.innerHTML = '<p>Testing API...</p>';
+        
+        const testData = {
+            firebase_uid: 'test_driver_uid',
+            driver_name: 'Test Driver',
+            driver_mobile: '9876543210',
+            driver_email: 'test@driver.com',
+            aadhar_number: '123456789012',
+            pan_number: 'ABCDE1234F',
+            license_number: 'DL1234567890',
+            address: 'Test Address',
+            city: 'Test City',
+            state: 'Test State',
+            pincode: '123456'
+        };
+        
+        try {
+            const response = await fetch('https://crm.abra-logistic.com/api1/vendor/submit_driver_kyc.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(testData)
+            });
+            
+            const responseText = await response.text();
+            
+            results.innerHTML = `
+                <h2>Results:</h2>
+                <p><strong>Status:</strong> ${response.status}</p>
+                <p><strong>Response:</strong></p>
+                <pre>${responseText}</pre>
+            `;
+            
+        } catch (error) {
+            results.innerHTML = `
+                <h2>Error:</h2>
+                <p>${error.message}</p>
+            `;
+        }
+    }
+    </script>
+</body>
+</html>

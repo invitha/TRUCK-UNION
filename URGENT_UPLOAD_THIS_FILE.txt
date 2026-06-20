@@ -1,0 +1,23 @@
+🚨 **URGENT: UPLOAD THIS FILE TO SERVER**
+
+The 500 error is because the server doesn't have the updated submit_driver_kyc.php file.
+
+**FILE TO UPLOAD:**
+📁 Source: c:\Users\Lenovo\vendors\vendor_app\server_php\api1_vendor\submit_driver_kyc.php
+📁 Destination: /home/royaldxd/crm.abra-logistic.com/api1/vendor/submit_driver_kyc.php
+
+**HOW TO UPLOAD:**
+1. Go to your hosting control panel (cPanel/File Manager)
+2. Navigate to: /home/royaldxd/crm.abra-logistic.com/api1/vendor/
+3. Upload the submit_driver_kyc.php file (overwrite if exists)
+4. Make sure file permissions are 644
+
+**OR QUICK TEST:**
+Open this in browser to test API: 
+file:///c:/Users/Lenovo/vendors/vendor_app/SIMPLE_API_TEST.html
+
+**WHAT THIS WILL FIX:**
+✅ 500 Internal Server Error
+✅ "Invalid JSON data received" error
+✅ Driver KYC submission will work
+✅ Admin panel will show submitted KYC data

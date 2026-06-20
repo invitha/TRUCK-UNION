@@ -1,0 +1,82 @@
+✅ BEAUTIFUL PHP DASHBOARD - UPLOAD INSTRUCTIONS
+================================================
+
+📁 FILE CREATED:
+vendor_app/vendor_kyc_dashboard.php
+
+🎯 WHAT IT DOES:
+- Beautiful, modern UI with gradient backgrounds
+- Shows ALL KYC data that vendors entered manually
+- Separated into Individual and Business sections
+- Displays all fields: Name, Email, Phone, Company Name (for business), Aadhaar, PAN, Bank details, etc.
+- Interactive cards with hover effects
+- Document viewing links
+- Approve/Reject/Revoke actions
+- Real-time statistics
+
+📊 DISPLAYS FOR INDIVIDUAL VENDORS:
+✅ Name
+✅ Email
+✅ Phone
+✅ Aadhaar Number
+✅ PAN Number
+✅ Bank Account Name
+✅ Bank Account Number
+✅ IFSC Code
+✅ Submission Date
+✅ All uploaded documents
+
+📊 DISPLAYS FOR BUSINESS VENDORS:
+✅ Name
+✅ Email
+✅ Phone
+✅ Company Name (HIGHLIGHTED IN GREEN BOX)
+✅ GST Number
+✅ Business Address
+✅ Aadhaar Number
+✅ PAN Number
+✅ Bank Account Name
+✅ Bank Account Number
+✅ IFSC Code
+✅ Submission Date
+✅ All uploaded documents (including GST Certificate & Address Proof)
+
+🚀 UPLOAD TO SERVER:
+
+1. Upload the PHP file:
+   Local: vendor_app/vendor_kyc_dashboard.php
+   Server: /home/royaldxd/crm.abra-logistic.com/vendor_kyc_dashboard.php
+
+2. Set permissions:
+   chmod 644 vendor_kyc_dashboard.php
+
+3. Access the dashboard:
+   https://crm.abra-logistic.com/vendor_kyc_dashboard.php
+
+📝 UPLOAD COMMAND:
+scp vendor_app/vendor_kyc_dashboard.php user@server:/home/royaldxd/crm.abra-logistic.com/
+
+🎨 FEATURES:
+- Modern gradient design
+- Responsive layout
+- Hover animations
+- Color-coded status badges
+- Company info highlighted for business vendors
+- All KYC fields displayed beautifully
+- Document preview links
+- Action buttons (Approve/Reject/Revoke)
+- Statistics dashboard at top
+
+✨ The dashboard will automatically:
+- Fetch all vendor KYC data from database
+- Separate Individual and Business vendors
+- Display all manually entered information
+- Show beautiful cards with all details
+- Allow admin actions
+
+🎯 PERFECT FOR:
+- Viewing all vendor KYC submissions
+- Managing thousands of vendors
+- Quick approval/rejection
+- Beautiful presentation of data
+- Professional admin interface

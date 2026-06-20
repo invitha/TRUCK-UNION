@@ -1,0 +1,137 @@
+╔══════════════════════════════════════════════════════════════════╗
+║  VEHICLE ASSIGNMENT WITH PAYMENT TRACKING - SETUP CHECKLIST     ║
+╚══════════════════════════════════════════════════════════════════╝
+
+✅ STEP 1: UPLOAD MODIFIED FILE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Upload this file to your server:
+📁 vendor_app/dashboard.php
+
+Location on server:
+/home/royaldxd/public_html/vendor_app/dashboard.php
+
+✅ STEP 2: ADD DATABASE COLUMNS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Option A: Via phpMyAdmin
+1. Login to phpMyAdmin
+2. Select database: royaldxd_abra_crm
+3. Click on "SQL" tab
+4. Copy and paste this SQL:
+
+ALTER TABLE fleet_assignments 
+ADD COLUMN IF NOT EXISTS payment_status ENUM('unpaid', 'advance_paid', 'partially_paid', 'fully_paid') DEFAULT 'unpaid' AFTER notes,
+ADD COLUMN IF NOT EXISTS payment_amount DECIMAL(10,2) DEFAULT 0.00 AFTER payment_status,
+ADD COLUMN IF NOT EXISTS advance_amount DECIMAL(10,2) DEFAULT 0.00 AFTER payment_amount,
+ADD COLUMN IF NOT EXISTS remaining_amount DECIMAL(10,2) DEFAULT 0.00 AFTER advance_amount,
+ADD COLUMN IF NOT EXISTS payment_date DATETIME NULL AFTER remaining_amount,
+ADD COLUMN IF NOT EXISTS payment_notes TEXT NULL AFTER payment_date;
+
+5. Click "Go" to execute
+
+Option B: Via Command Line
+1. SSH into your server
+2. Run:
+   mysql -u royaldxd_user -p royaldxd_abra_crm
+3. Enter password: meg_layout312
+4. Paste the SQL above
+5. Type: exit
+
+✅ STEP 3: TEST THE FEATURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Open: https://yourdomain.com/vendor_app/dashboard.php
+2. Find any vehicle in the list
+3. Click "📋 Assign" button
+4. Modal should open with assignment form
+5. Fill in all details:
+   - AL Number: AL123456
+   - Pickup: Test Pickup Location
+   - Delivery: Test Delivery Location
+   - Date: Select future date
+   - Payment Status: Advance Paid
+   - Total Amount: 50000
+   - Advance: 15000
+6. Check remaining amount shows: ₹35,000.00
+7. Click "✅ Assign Vehicle"
+8. Success message should appear
+
+✅ STEP 4: VERIFY IN DATABASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Open phpMyAdmin
+2. Go to fleet_assignments table
+3. Check latest record has:
+   - al_number: AL123456
+   - payment_status: advance_paid
+   - payment_amount: 50000.00
+   - advance_amount: 15000.00
+   - remaining_amount: 35000.00
+
+✅ WHAT'S NEW?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ "Assign" button on each vehicle row
+✓ Assignment modal with complete form
+✓ Payment tracking with 4 statuses:
+  - Unpaid
+  - Advance Paid
+  - Partially Paid
+  - Fully Paid
+✓ Automatic remaining amount calculation
+✓ Success/error messages
+✓ Form validation
+✓ Consistent with vendor app
+
+✅ PAYMENT STATUS GUIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Unpaid:
+  - No payment received
+  - Advance field hidden
+
+Advance Paid:
+  - Partial advance given
+  - Shows advance field
+  - Calculates remaining
+
+Partially Paid:
+  - Some payment done
+  - Shows advance field
+  - Calculates remaining
+
+Fully Paid:
+  - Complete payment
+  - Advance field hidden
+  - No remaining amount
+
+✅ TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Problem: Assign button not showing
+Solution: Clear browser cache, refresh page
+
+Problem: Modal not opening
+Solution: Check browser console (F12) for errors
+
+Problem: Payment fields not working
+Solution: Run the SQL migration to add columns
+
+Problem: Form not submitting
+Solution: Check all required fields are filled
+
+Problem: Database error
+Solution: Verify payment columns exist in fleet_assignments table
+
+✅ FILES INCLUDED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📄 dashboard.php (MODIFIED) - Main dashboard with assignment feature
+📄 server_php/add_payment_columns.sql - Database migration
+📄 VEHICLE_ASSIGNMENT_WITH_PAYMENT.md - Complete documentation
+📄 SETUP_ASSIGNMENT_FEATURE.txt - This checklist
+
+✅ NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Upload dashboard.php
+2. Run SQL migration
+3. Test assignment feature
+4. Train internal team on usage
+5. Monitor for any issues
+
+═══════════════════════════════════════════════════════════════════
+Need help? Check VEHICLE_ASSIGNMENT_WITH_PAYMENT.md for details
+═══════════════════════════════════════════════════════════════════

@@ -1,0 +1,249 @@
+╔══════════════════════════════════════════════════════════════════╗
+║          VEHICLE ASSIGNMENT - QUICK REFERENCE CARD               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      HOW TO ASSIGN A VEHICLE                      │
+└──────────────────────────────────────────────────────────────────┘
+
+1. Open dashboard.php
+2. Find vehicle in list
+3. Click "📋 Assign" button
+4. Fill form in modal
+5. Click "✅ Assign Vehicle"
+6. Done! ✓
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      PAYMENT STATUS QUICK GUIDE                   │
+└──────────────────────────────────────────────────────────────────┘
+
+🔴 UNPAID
+   When: No payment received
+   Advance Field: Hidden
+   Example: Credit customer, pay on delivery
+
+🟡 ADVANCE PAID
+   When: Partial advance given
+   Advance Field: Shown
+   Example: 30% advance, rest on delivery
+
+🟠 PARTIALLY PAID
+   When: Multiple payments received
+   Advance Field: Shown
+   Example: Paid ₹30k of ₹50k total
+
+🟢 FULLY PAID
+   When: Complete payment received
+   Advance Field: Hidden
+   Example: Full amount paid upfront
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      FORM FIELDS CHEAT SHEET                      │
+└──────────────────────────────────────────────────────────────────┘
+
+REQUIRED FIELDS (marked with *)
+├─ AL Number *          → Shipment ID (e.g., AL123456)
+├─ Pickup Location *    → Full pickup address
+├─ Delivery Location *  → Full delivery address
+├─ Expected Date *      → Target completion date
+├─ Payment Status *     → Select from dropdown
+└─ Payment Amount *     → Total amount in ₹
+
+OPTIONAL FIELDS
+├─ Assigned By          → Your name
+├─ Advance Amount       → If advance/partial paid
+└─ Notes                → Special instructions
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      PAYMENT CALCULATION                          │
+└──────────────────────────────────────────────────────────────────┘
+
+Formula: Remaining = Total - Advance
+
+Examples:
+├─ Total: ₹50,000 | Advance: ₹15,000 → Remaining: ₹35,000
+├─ Total: ₹30,000 | Advance: ₹10,000 → Remaining: ₹20,000
+└─ Total: ₹25,000 | Advance: ₹25,000 → Remaining: ₹0
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      COMMON SCENARIOS                             │
+└──────────────────────────────────────────────────────────────────┘
+
+SCENARIO 1: Full Payment Upfront
+├─ Status: Fully Paid
+├─ Total: ₹25,000
+├─ Advance: (leave empty)
+└─ Action: Just deliver
+
+SCENARIO 2: 30% Advance
+├─ Status: Advance Paid
+├─ Total: ₹50,000
+├─ Advance: ₹15,000
+└─ Action: Collect ₹35,000 on delivery
+
+SCENARIO 3: Credit Customer
+├─ Status: Unpaid
+├─ Total: ₹30,000
+├─ Advance: (leave empty)
+└─ Action: Collect full amount on delivery
+
+SCENARIO 4: Multiple Payments
+├─ Status: Partially Paid
+├─ Total: ₹40,000
+├─ Advance: ₹25,000
+└─ Action: Collect ₹15,000 remaining
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      KEYBOARD SHORTCUTS                           │
+└──────────────────────────────────────────────────────────────────┘
+
+ESC          → Close modal
+TAB          → Move to next field
+SHIFT+TAB    → Move to previous field
+ENTER        → Submit form (when in text field)
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      VALIDATION RULES                             │
+└──────────────────────────────────────────────────────────────────┘
+
+AL Number
+├─ Required
+├─ Only letters and numbers
+└─ Example: AL123456, AL789012
+
+Locations
+├─ Required
+├─ Any text
+└─ Be specific with full address
+
+Date
+├─ Required
+├─ Must be today or future
+└─ Cannot select past dates
+
+Payment Amount
+├─ Required
+├─ Must be number
+├─ Must be greater than 0
+└─ Can have decimals (e.g., 15000.50)
+
+Advance Amount
+├─ Optional (shown for advance/partial)
+├─ Must be number
+├─ Cannot exceed total amount
+└─ Can be 0
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      ERROR MESSAGES                               │
+└──────────────────────────────────────────────────────────────────┘
+
+"Please fill out this field"
+→ Required field is empty
+
+"Please match the requested format"
+→ AL Number has invalid characters
+
+"Value must be greater than or equal to 0"
+→ Negative number entered
+
+"Vehicle not found"
+→ Database error, contact admin
+
+"Error: ..."
+→ Database error, check logs
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      TIPS & BEST PRACTICES                        │
+└──────────────────────────────────────────────────────────────────┘
+
+✓ DO:
+├─ Double-check AL number before submitting
+├─ Enter complete addresses
+├─ Verify payment amounts
+├─ Add notes for special instructions
+├─ Confirm payment status with customer
+└─ Update status when receiving payments
+
+✗ DON'T:
+├─ Leave payment amount as 0
+├─ Enter advance more than total
+├─ Use special characters in AL number
+├─ Forget to set expected date
+└─ Skip important notes
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      TROUBLESHOOTING                              │
+└──────────────────────────────────────────────────────────────────┘
+
+Problem: Modal not opening
+Solution: Refresh page, clear cache
+
+Problem: Assign button not visible
+Solution: Check if vehicle exists in database
+
+Problem: Form not submitting
+Solution: Check all required fields are filled
+
+Problem: Remaining amount wrong
+Solution: Verify total and advance amounts
+
+Problem: Success message not showing
+Solution: Check database connection
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      DATABASE COLUMNS                             │
+└──────────────────────────────────────────────────────────────────┘
+
+Table: fleet_assignments
+
+New Columns:
+├─ payment_status      → enum (unpaid, advance_paid, etc.)
+├─ payment_amount      → decimal(10,2)
+├─ advance_amount      → decimal(10,2)
+├─ remaining_amount    → decimal(10,2)
+├─ payment_date        → datetime
+└─ payment_notes       → text
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      CONTACT & SUPPORT                            │
+└──────────────────────────────────────────────────────────────────┘
+
+For detailed documentation:
+📄 VEHICLE_ASSIGNMENT_WITH_PAYMENT.md
+
+For setup instructions:
+📄 SETUP_ASSIGNMENT_FEATURE.txt
+
+For examples:
+📄 PAYMENT_FLOW_EXAMPLES.txt
+
+For flow diagrams:
+📄 ASSIGNMENT_FLOW_DIAGRAM.txt
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      VERSION INFO                                 │
+└──────────────────────────────────────────────────────────────────┘
+
+Feature: Vehicle Assignment with Payment Tracking
+Version: 1.0
+Status: ✅ Ready to Use
+Database: royaldxd_abra_crm
+Table: fleet_assignments
+File: dashboard.php
+
+
+═══════════════════════════════════════════════════════════════════
+              KEEP THIS CARD HANDY FOR QUICK REFERENCE
+═══════════════════════════════════════════════════════════════════

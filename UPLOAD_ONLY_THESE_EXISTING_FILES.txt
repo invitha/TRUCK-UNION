@@ -1,0 +1,34 @@
+# UPLOAD ONLY THESE 3 EXISTING FILES (No New Files)
+
+## Files Modified and Ready to Upload:
+
+### 1. /api1/serve_kyc_document.php
+**Source:** vendor_app/server_php/serve_kyc_document.php
+**What changed:** Now handles both vendor and driver KYC documents with multiple path checking
+
+### 2. /api1/serve_kyc_image.php  
+**Source:** vendor_app/server_php/serve_kyc_image.php
+**What changed:** Updated to check both vendor and driver document paths
+
+### 3. /driver_kyc_admin_panel.php
+**Source:** vendor_app/driver_kyc_admin_panel.php
+**What changed:** Updated image URLs to use serve_kyc_document.php
+
+### 4. /manage_driver_kyc.php (if it exists on server)
+**Source:** manage_driver_kyc.php (root folder)
+**What changed:** Updated image serving URL
+
+## Upload Instructions:
+1. Upload serve_kyc_document.php to /api1/
+2. Upload serve_kyc_image.php to /api1/ 
+3. Upload driver_kyc_admin_panel.php to root
+4. Upload manage_driver_kyc.php to root (if it exists)
+
+## Test:
+After upload, visit driver_kyc_admin_panel.php and click "View" on any driver KYC. Images should now load properly!
+
+## What This Fixes:
+✅ Admin panel shows driver KYC submissions correctly
+✅ Document images load properly
+✅ No more "wrong details" issue
+✅ Uses existing files instead of creating new ones

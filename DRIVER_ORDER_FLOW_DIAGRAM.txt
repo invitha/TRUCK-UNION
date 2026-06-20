@@ -1,0 +1,259 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    DRIVER ORDER MANAGEMENT SYSTEM FLOW
+═══════════════════════════════════════════════════════════════════════════════
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          ADMIN MODULE (Your Dashboard)                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      │ 1. Create Order
+                                      ▼
+                        ┌──────────────────────────┐
+                        │   Generate AL Number     │
+                        │   AL00000123             │
+                        │                          │
+                        │   Set Load Type:         │
+                        │   ○ Part Load            │
+                        │   ○ FTL                  │
+                        │   ○ Express              │
+                        └──────────────────────────┘
+                                      │
+                                      │ 2. Assign to Driver/Vehicle
+                                      ▼
+                        ┌──────────────────────────┐
+                        │   Database               │
+                        │   customer_orders        │
+                        │                          │
+                        │   al_number: AL00000123  │
+                        │   load_category: part_load│
+                        │   vehicle_id: 5          │
+                        │   status: Assigned       │
+                        └──────────────────────────┘
+                                      │
+                                      │ 3. Driver Opens App
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          DRIVER APP (Mobile)                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+    ┌───────────────────────────────────────────────────────────────────┐
+    │                      DRIVER DASHBOARD                              │
+    │                                                                    │
+    │  ┌──────────┐  ┌──────────┐  ┌──────────┐                       │
+    │  │  Total   │  │Part Load │  │   FTL    │                       │
+    │  │    10    │  │    6     │  │    4     │                       │
+    │  └──────────┘  └──────────┘  └──────────┘                       │
+    │                                                                    │
+    │  Filters:                                                         │
+    │  [All] [Part Load] [FTL] [Express]                               │
+    │  [All Status] [Pending Pickup] [In Transit]                      │
+    │                                                                    │
+    └───────────────────────────────────────────────────────────────────┘
+                                      │
+                                      │ 4. View Orders
+                                      ▼
+    ┌───────────────────────────────────────────────────────────────────┐
+    │                        ORDER LIST                                  │
+    │                                                                    │
+    │  ┌─────────────────────────────────────────────────────────┐    │
+    │  │ [Part Load]                          [Assigned]          │    │
+    │  │                                                           │    │
+    │  │ 📋 AL: AL00000123                                        │    │
+    │  │ Tracking: TRK123456                                      │    │
+    │  │                                                           │    │
+    │  │ 📍 From: 123 Main St, Mumbai                            │    │
+    │  │ 📍 To: 456 Oak Ave, Delhi                               │    │
+    │  │                                                           │    │
+    │  │ ₹500                          [Update Status] ──────┐   │    │
+    │  └─────────────────────────────────────────────────────│───┘    │
+    │                                                          │        │
+    │  ┌─────────────────────────────────────────────────────│───┐    │
+    │  │ [FTL]                                [Picked Up]     │   │    │
+    │  │                                                       │   │    │
+    │  │ 📋 AL: AL00000124                                    │   │    │
+    │  │ Tracking: TRK123457                                  │   │    │
+    │  │                                                       │   │    │
+    │  │ 📍 From: 789 Park Rd, Pune                          │   │    │
+    │  │ 📍 To: 321 Lake St, Bangalore                       │   │    │
+    │  │                                                       │   │    │
+    │  │ ₹1200                         [Update Status]        │   │    │
+    │  └───────────────────────────────────────────────────────┘   │    │
+    └───────────────────────────────────────────────────────────────────┘
+                                                                    │
+                                      │ 5. Tap Update Status       │
+                                      ▼                             │
+    ┌───────────────────────────────────────────────────────────────────┐
+    │                    ORDER DETAILS SHEET                             │
+    │                                                                    │
+    │  Order Details                                                    │
+    │  ─────────────────────────────────────────────────────────────   │
+    │  AL Number:        AL00000123                                     │
+    │  Tracking Number:  TRK123456                                      │
+    │  Load Type:        Part Load                                      │
+    │  Status:           Assigned                                       │
+    │  Customer:         John Doe                                       │
+    │  Sender:           ABC Company                                    │
+    │  Sender Phone:     9999999999                                     │
+    │  Sender Address:   123 Main St, Mumbai                           │
+    │  Receiver:         XYZ Corp                                       │
+    │  Receiver Phone:   8888888888                                     │
+    │  Receiver Address: 456 Oak Ave, Delhi                            │
+    │  Amount:           ₹500                                           │
+    │  Payment Mode:     PREPAID                                        │
+    │                                                                    │
+    │  ┌──────────────────────────────────────────────────────┐       │
+    │  │         [✓ Mark as Picked Up]                        │       │
+    │  └──────────────────────────────────────────────────────┘       │
+    │                                                                    │
+    └───────────────────────────────────────────────────────────────────┘
+                                      │
+                                      │ 6. Driver Confirms Action
+                                      ▼
+                        ┌──────────────────────────┐
+                        │   API Call               │
+                        │   update_order_status_   │
+                        │   enhanced.php           │
+                        │                          │
+                        │   POST:                  │
+                        │   {                      │
+                        │     al_number: AL00000123│
+                        │     vehicle_id: 5        │
+                        │     status: "Picked Up"  │
+                        │     timestamp: NOW()     │
+                        │   }                      │
+                        └──────────────────────────┘
+                                      │
+                                      │ 7. Update Database
+                                      ▼
+                        ┌──────────────────────────┐
+                        │   Database Update        │
+                        │                          │
+                        │   status: "Picked Up"    │
+                        │   picked_up_at: NOW()    │
+                        │   updated_at: NOW()      │
+                        └──────────────────────────┘
+                                      │
+                                      │ 8. Success Response
+                                      ▼
+    ┌───────────────────────────────────────────────────────────────────┐
+    │                    SUCCESS MESSAGE                                 │
+    │                                                                    │
+    │  ✓ Order status updated to Picked Up                             │
+    │                                                                    │
+    └───────────────────────────────────────────────────────────────────┘
+                                      │
+                                      │ 9. Refresh Order List
+                                      ▼
+    ┌───────────────────────────────────────────────────────────────────┐
+    │  Order moved from "Pending Pickup" to "In Transit" tab           │
+    │                                                                    │
+    │  Now driver can:                                                  │
+    │  • Mark as "In Transit" (with location)                          │
+    │  • Mark as "Delivered" (final status)                            │
+    └───────────────────────────────────────────────────────────────────┘
+                                      │
+                                      │ 10. Admin Sees Update
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          ADMIN MODULE                                        │
+│                                                                              │
+│  Order AL00000123 Status History:                                          │
+│  ────────────────────────────────────────────────────────────────────────  │
+│  ✓ Assigned         → 2026-05-23 09:00:00                                  │
+│  ✓ Picked Up        → 2026-05-23 10:30:00  (Driver updated)               │
+│  ⏳ In Transit      → Pending                                               │
+│  ⏳ Delivered       → Pending                                               │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                            STATUS PROGRESSION
+═══════════════════════════════════════════════════════════════════════════════
+
+    [Assigned]  ──────►  [Picked Up]  ──────►  [In Transit]  ──────►  [Delivered]
+        │                     │                      │                      │
+        │                     │                      │                      │
+    Admin assigns        Driver collects        Driver updates        Driver delivers
+    to vehicle           shipment                location              to receiver
+                                                                            │
+                                                                            ▼
+                                                                    Order Complete!
+                                                                    Removed from
+                                                                    driver's list
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                            LOAD TYPE CATEGORIES
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐
+│    PART LOAD        │  │        FTL          │  │      EXPRESS        │
+│                     │  │                     │  │                     │
+│  📦 Shared Space    │  │  🚛 Full Truck      │  │  ⚡ Priority        │
+│  Multiple shipments │  │  Single customer    │  │  Urgent delivery    │
+│  Lower cost         │  │  Higher volume      │  │  Premium service    │
+│  Flexible timing    │  │  Dedicated vehicle  │  │  Fast delivery      │
+│                     │  │                     │  │                     │
+│  Color: Blue        │  │  Color: Purple      │  │  Color: Red         │
+└─────────────────────┘  └─────────────────────┘  └─────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                            KEY FEATURES
+═══════════════════════════════════════════════════════════════════════════════
+
+✨ AL NUMBER SYSTEM
+   • Unique identifier for each order
+   • Easy to communicate (just say "AL123")
+   • Quick search and tracking
+
+✨ LOAD TYPE FILTERING
+   • Drivers see orders by category
+   • Better organization
+   • Prioritize urgent deliveries
+
+✨ STATUS TRACKING
+   • Real-time updates
+   • Automatic timestamps
+   • Complete audit trail
+
+✨ DRIVER NOTES
+   • Add comments at each stage
+   • Record issues or observations
+   • Better communication with admin
+
+✨ LOCATION TRACKING
+   • GPS coordinates recorded
+   • Track shipment movement
+   • Verify delivery location
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                            BENEFITS
+═══════════════════════════════════════════════════════════════════════════════
+
+FOR DRIVERS:
+✓ Clear order identification
+✓ Easy status updates
+✓ Filter by load type
+✓ See only active orders
+✓ One-tap actions
+
+FOR ADMIN:
+✓ Real-time tracking
+✓ Automatic timestamps
+✓ Driver accountability
+✓ Better planning
+✓ Reduced errors
+
+FOR CUSTOMERS:
+✓ Accurate tracking
+✓ Timely updates
+✓ Better service
+✓ Transparency
+✓ Trust
+
+
+═══════════════════════════════════════════════════════════════════════════════

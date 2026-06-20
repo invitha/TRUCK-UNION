@@ -1,0 +1,155 @@
+═══════════════════════════════════════════════════════════════
+  COMPLETE DRIVER ORDER SYSTEM - UPLOAD INSTRUCTIONS
+═══════════════════════════════════════════════════════════════
+
+📋 STEP 1: DATABASE SETUP
+═══════════════════════════════════════════════════════════════
+
+Upload and execute this SQL file:
+📄 vendor_app/server_php/enhance_orders_for_drivers.sql
+
+This adds:
+- al_number column
+- load_category column (part_load, ftl, express)
+- pickup_pod_image and delivery_pod_image columns
+- Status timestamp columns (in_scan_at, in_transit_at, etc.)
+
+
+📋 STEP 2: UPLOAD PHP FILES
+═══════════════════════════════════════════════════════════════
+
+Upload to /public_html/api1/vendor/:
+
+✅ get_driver_orders_enhanced.php
+✅ update_order_status_enhanced.php
+✅ upload_pod.php (NEW - for POD image upload)
+
+
+📋 STEP 3: UPLOAD ADMIN MODULE
+═══════════════════════════════════════════════════════════════
+
+Upload to /public_html/:
+
+✅ pickup_assignment_module.php
+
+This module shows:
+- Only "AWB Created" orders
+- Two tabs: Part Load | Full Load
+- Assign to drivers
+- Once assigned, order disappears from this module
+
+
+📋 STEP 4: CREATE POD IMAGES FOLDER
+═══════════════════════════════════════════════════════════════
+
+Create folder on server:
+/public_html/pod_images/
+
+Set permissions: 755 or 777
+
+
+📋 STEP 5: FLUTTER APP FILES
+═══════════════════════════════════════════════════════════════
+
+Already updated in your project:
+✅ lib/services/api_service.dart (uploadPOD method added)
+✅ lib/screens/driver/driver_orders_complete.dart (complete driver screen with POD)
+
+Add image_picker to pubspec.yaml:
+dependencies:
+  image_picker: ^1.0.4
+
+
+📋 STEP 6: UPDATE PUBSPEC.YAML
+═══════════════════════════════════════════════════════════════
+
+Add this dependency:
+image_picker: ^1.0.4
+
+Then run:
+flutter pub get
+
+
+📋 SYSTEM FLOW
+═══════════════════════════════════════════════════════════════
+
+1. ADMIN: Opens pickup_assignment_module.php
+   → Sees "AWB Created" orders in Part Load & FTL tabs
+   → Assigns order to driver
+   → Order disappears from module (status changes to "Assigned")
+
+2. DRIVER: Opens app
+   → Sees assigned orders with AL numbers
+   → Clicks AL number to update status
+
+3. DRIVER STATUS UPDATES (Like Abra Logistics):
+   
+   Assigned → Picked Up (requires POD photo)
+            ↓
+         In Scan
+            ↓
+        In Transit
+            ↓
+       In Warehouse
+            ↓
+    Out for Delivery
+            ↓
+        Delivered (requires POD photo)
+
+
+📋 STATUS DESCRIPTIONS (From Your Image)
+═══════════════════════════════════════════════════════════════
+
+Received office    → The consignment is Received in office
+In scan            → The consignment is process for delivery
+In transit         → The consignment is in transit to the delivery
+In warehouse       → The consignment is delivery at destination
+Out for delivery   → The consignment is out for delivery to the consignee
+Delivered          → The consignment as delivered to the consignee
+
+
+📋 POD (PROOF OF DELIVERY) UPLOAD
+═══════════════════════════════════════════════════════════════
+
+Driver must upload photo at:
+1. Picked Up status (pickup POD)
+2. Delivered status (delivery POD)
+
+Photos stored in: /public_html/pod_images/
+Format: AL00000123_pickup_1234567890.jpg
+
+
+📋 TESTING
+═══════════════════════════════════════════════════════════════
+
+1. Create test order with status "AWB Created"
+2. Set load_category to "part_load" or "ftl"
+3. Open pickup_assignment_module.php
+4. Assign to driver
+5. Login as driver in app
+6. Update status step by step
+7. Upload POD photos
+8. Check database for status updates
+
+
+📋 FILES SUMMARY
+═══════════════════════════════════════════════════════════════
+
+SERVER FILES:
+- enhance_orders_for_drivers.sql (database)
+- pickup_assignment_module.php (admin module)
+- api1_vendor/get_driver_orders_enhanced.php
+- api1_vendor/update_order_status_enhanced.php
+- api1_vendor/upload_pod.php
+
+FLUTTER FILES:
+- lib/services/api_service.dart (updated)
+- lib/screens/driver/driver_orders_complete.dart (new)
+
+FOLDER:
+- pod_images/ (create on server)
+
+
+═══════════════════════════════════════════════════════════════
+                    SYSTEM READY! 🚀
+═══════════════════════════════════════════════════════════════

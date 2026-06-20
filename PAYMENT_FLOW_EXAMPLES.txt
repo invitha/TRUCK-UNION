@@ -1,0 +1,232 @@
+╔══════════════════════════════════════════════════════════════════╗
+║         PAYMENT TRACKING - REAL WORLD EXAMPLES                   ║
+╚══════════════════════════════════════════════════════════════════╝
+
+📦 EXAMPLE 1: FULL ADVANCE PAYMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Scenario: Customer pays full amount upfront
+
+Assignment Details:
+├─ AL Number: AL789012
+├─ Vehicle: MH12AB1234 (Tata 407)
+├─ Route: Mumbai → Pune
+└─ Driver: Rajesh Kumar
+
+Payment Details:
+├─ Total Amount: ₹25,000
+├─ Payment Status: Fully Paid
+├─ Advance Amount: ₹25,000
+└─ Remaining: ₹0
+
+Status in System: ✅ Fully Paid
+Vendor Sees: Full payment received
+
+
+📦 EXAMPLE 2: PARTIAL ADVANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Scenario: Customer pays 30% advance, rest on delivery
+
+Assignment Details:
+├─ AL Number: AL456789
+├─ Vehicle: GJ01CD5678 (Eicher 14ft)
+├─ Route: Ahmedabad → Delhi
+└─ Driver: Suresh Patel
+
+Payment Details:
+├─ Total Amount: ₹50,000
+├─ Payment Status: Advance Paid
+├─ Advance Amount: ₹15,000 (30%)
+└─ Remaining: ₹35,000
+
+Status in System: 💰 Advance Paid
+Vendor Sees: ₹15,000 received, ₹35,000 pending
+Action: Collect ₹35,000 on delivery
+
+
+📦 EXAMPLE 3: NO ADVANCE (CREDIT)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Scenario: Regular customer, payment after delivery
+
+Assignment Details:
+├─ AL Number: AL123456
+├─ Vehicle: DL10EF9012 (Ashok Leyland)
+├─ Route: Delhi → Jaipur
+└─ Driver: Amit Singh
+
+Payment Details:
+├─ Total Amount: ₹30,000
+├─ Payment Status: Unpaid
+├─ Advance Amount: ₹0
+└─ Remaining: ₹30,000
+
+Status in System: ⏳ Unpaid
+Vendor Sees: No payment yet, collect on delivery
+Action: Collect full ₹30,000 on delivery
+
+
+📦 EXAMPLE 4: MULTIPLE INSTALLMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Scenario: Customer pays in 2 parts
+
+Step 1 - Initial Assignment:
+├─ AL Number: AL345678
+├─ Vehicle: MH14GH3456 (Mahindra Bolero)
+├─ Route: Nagpur → Hyderabad
+├─ Driver: Prakash Reddy
+├─ Total Amount: ₹40,000
+├─ Payment Status: Advance Paid
+├─ Advance Amount: ₹20,000
+└─ Remaining: ₹20,000
+
+Step 2 - After Partial Payment:
+├─ Payment Status: Partially Paid
+├─ Advance Amount: ₹30,000 (₹20k + ₹10k)
+└─ Remaining: ₹10,000
+
+Step 3 - Final Payment:
+├─ Payment Status: Fully Paid
+├─ Advance Amount: ₹40,000
+└─ Remaining: ₹0
+
+
+📦 EXAMPLE 5: LARGE SHIPMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Scenario: High-value cargo with 50% advance
+
+Assignment Details:
+├─ AL Number: AL901234
+├─ Vehicle: KA05IJ7890 (Tata LPT 1613)
+├─ Route: Bangalore → Chennai
+└─ Driver: Venkatesh Kumar
+
+Payment Details:
+├─ Total Amount: ₹1,50,000
+├─ Payment Status: Advance Paid
+├─ Advance Amount: ₹75,000 (50%)
+└─ Remaining: ₹75,000
+
+Status in System: 💰 Advance Paid
+Vendor Sees: ₹75,000 received, ₹75,000 on delivery
+Action: Collect remaining ₹75,000 on delivery
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                    PAYMENT STATUS MEANINGS                        ║
+╚══════════════════════════════════════════════════════════════════╝
+
+🔴 UNPAID
+   ├─ No payment received yet
+   ├─ Full amount pending
+   ├─ Usually for credit customers
+   └─ Collect full amount on delivery
+
+🟡 ADVANCE PAID
+   ├─ Partial advance received
+   ├─ Remaining amount pending
+   ├─ Most common scenario
+   └─ Collect remaining on delivery
+
+🟠 PARTIALLY PAID
+   ├─ Some payment received
+   ├─ More than advance, less than full
+   ├─ Multiple installments
+   └─ Collect remaining balance
+
+🟢 FULLY PAID
+   ├─ Complete payment received
+   ├─ No pending amount
+   ├─ Nothing to collect
+   └─ Just deliver the goods
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                  HOW TO FILL THE FORM                            ║
+╚══════════════════════════════════════════════════════════════════╝
+
+STEP 1: Basic Details
+┌────────────────────────────────────────────────────────────────┐
+│ AL Number: AL123456                                            │
+│ Pickup: Shop No 5, MG Road, Mumbai 400001                     │
+│ Delivery: Warehouse 12, Pune-Bangalore Highway, Pune 411001   │
+│ Expected Date: 2024-12-25                                      │
+│ Assigned By: Ramesh (Internal Team)                           │
+└────────────────────────────────────────────────────────────────┘
+
+STEP 2: Payment Details
+┌────────────────────────────────────────────────────────────────┐
+│ Payment Status: [Select from dropdown]                         │
+│                                                                 │
+│ If UNPAID:                                                      │
+│   Total Amount: 30000                                          │
+│   (Advance field hidden)                                       │
+│                                                                 │
+│ If ADVANCE PAID or PARTIALLY PAID:                            │
+│   Total Amount: 50000                                          │
+│   Advance Amount: 15000                                        │
+│   → System shows: Remaining: ₹35,000.00                       │
+│                                                                 │
+│ If FULLY PAID:                                                 │
+│   Total Amount: 25000                                          │
+│   (Advance field hidden)                                       │
+└────────────────────────────────────────────────────────────────┘
+
+STEP 3: Notes (Optional)
+┌────────────────────────────────────────────────────────────────┐
+│ Notes: Fragile items. Handle with care.                       │
+│        Collect remaining ₹35,000 in cash on delivery.         │
+│        Contact customer 1 hour before delivery.                │
+└────────────────────────────────────────────────────────────────┘
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                    COMMON QUESTIONS                              ║
+╚══════════════════════════════════════════════════════════════════╝
+
+Q: What if customer pays more advance later?
+A: Update the assignment with new advance amount and change status
+   to "Partially Paid" if not yet full.
+
+Q: Can I change payment status after assignment?
+A: Yes, you can edit the assignment in the database or create an
+   update feature (future enhancement).
+
+Q: What if payment is in multiple parts?
+A: Use "Partially Paid" status and update advance amount as each
+   payment is received.
+
+Q: How does vendor see this information?
+A: Vendor sees payment details in their "Assigned Fleets" screen
+   in the mobile app.
+
+Q: Can vendor update payment status?
+A: Currently no. Only internal team can update. This ensures
+   payment tracking accuracy.
+
+Q: What currency is used?
+A: Indian Rupees (₹) by default. Amounts are stored as decimal
+   numbers in the database.
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                    BEST PRACTICES                                ║
+╚══════════════════════════════════════════════════════════════════╝
+
+✅ DO:
+├─ Always enter accurate payment amounts
+├─ Update payment status when receiving payments
+├─ Add notes about payment collection instructions
+├─ Verify advance amount before submitting
+├─ Keep payment records for accounting
+└─ Communicate payment status to vendor
+
+❌ DON'T:
+├─ Leave payment amount as 0
+├─ Mark as "Fully Paid" if advance is less than total
+├─ Forget to update status after receiving payments
+├─ Enter advance more than total amount
+└─ Assign without confirming payment terms
+
+
+═══════════════════════════════════════════════════════════════════
+For more details, see: VEHICLE_ASSIGNMENT_WITH_PAYMENT.md
+═══════════════════════════════════════════════════════════════════

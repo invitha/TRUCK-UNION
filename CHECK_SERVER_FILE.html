@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check Server File</title>
+</head>
+<body>
+    <h1>🔍 Check Server File Status</h1>
+    <button onclick="checkFile()">Check Server File</button>
+    <div id="results"></div>
+
+    <script>
+    async function checkFile() {
+        const results = document.getElementById('results');
+        results.innerHTML = '<p>Checking server file...</p>';
+        
+        try {
+            // Test with a simple GET request first
+            const response = await fetch('https://crm.abra-logistic.com/api1/vendor/submit_driver_kyc.php', {
+                method: 'GET'
+            });
+            
+            const responseText = await response.text();
+            
+            results.innerHTML = `
+                <h2>Server File Status:</h2>
+                <p><strong>HTTP Status:</strong> ${response.status}</p>
+                <p><strong>Response (first 500 chars):</strong></p>
+                <pre>${responseText.substring(0, 500)}</pre>
+                
+                ${response.status === 405 ? '<p>✅ File exists but needs POST method</p>' : ''}
+                ${response.status === 404 ? '<p>❌ File not found on server</p>' : ''}
+                ${response.status === 500 ? '<p>❌ Server error - file has issues</p>' : ''}
+            `;
+            
+        } catch (error) {
+            results.innerHTML = `
+                <h2>Error:</h2>
+                <p>❌ ${error.message}</p>
+                <p>💡 This might mean the file doesn't exist on the server</p>
+            `;
+        }
+    }
+    </script>
+</body>
+</html>

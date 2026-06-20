@@ -1,0 +1,30 @@
+VENDOR SUMMARY VIEW - Implementation Guide
+
+The dashboard.php now has a "View Mode" toggle in the sidebar with two options:
+1. 📋 Detailed View (current view - shows all vehicles in tables)
+2. 📊 Vendor Summary (new Excel-like analytics view)
+
+To complete this feature, we need to add the vendor summary table that shows:
+
+COLUMNS:
+- State
+- Vendor Name  
+- Mobile
+- Service Locations
+- Fleet Size breakdown (6ft, 7ft, 8ft, 10ft, 12ft) with Online/Offline counts
+- Total Vehicles
+
+The view should:
+- Group vendors by state (like your Excel)
+- Show online/offline counts for each fleet size
+- Color code: Green for online, Red for offline
+- Show total vehicles per vendor
+- List service locations (cities where vehicles are located)
+
+This provides a high-level analytics view perfect for internal team to quickly see:
+- Which vendors have how many vehicles
+- Fleet composition by size
+- Online/offline status at a glance
+- Geographic coverage (service locations)
+
+Upload the updated dashboard.php first, then I'll add the complete vendor summary table implementation.

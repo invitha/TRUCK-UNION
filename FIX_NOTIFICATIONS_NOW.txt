@@ -1,0 +1,70 @@
+═══════════════════════════════════════════════════════════════
+  FIX NOTIFICATIONS - UPLOAD THESE 3 FILES NOW
+═══════════════════════════════════════════════════════════════
+
+🔴 ERROR YOU'RE SEEING:
+
+DioException [connection error]: The XMLHttpRequest onError callback 
+was called. This typically indicates an error on the network layer.
+
+This means: THE PHP FILES ARE NOT ON THE SERVER!
+
+═══════════════════════════════════════════════════════════════
+
+📁 UPLOAD THESE 3 FILES:
+
+1. get_notifications.php
+   LOCAL:  vendor_app/server_php/api1_vendor/get_notifications.php
+   SERVER: /home/royaldxd/crm.abra-logistic.com/api1/vendor/get_notifications.php
+
+2. mark_notification_read.php
+   LOCAL:  vendor_app/server_php/api1_vendor/mark_notification_read.php
+   SERVER: /home/royaldxd/crm.abra-logistic.com/api1/vendor/mark_notification_read.php
+
+3. create_notification.php
+   LOCAL:  vendor_app/server_php/api1_vendor/create_notification.php
+   SERVER: /home/royaldxd/crm.abra-logistic.com/api1/vendor/create_notification.php
+
+═══════════════════════════════════════════════════════════════
+
+🧪 TEST AFTER UPLOAD:
+
+1. Open browser and go to:
+   https://crm.abra-logistic.com/api1/vendor/get_notifications.php
+
+2. You should see JSON response like:
+   {
+     "status": "error",
+     "message": "Firebase UID required",
+     "notifications": [],
+     "unread_count": 0
+   }
+
+3. If you see this JSON (not 404 error), files are uploaded correctly!
+
+4. Then open your app and notifications will work!
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ IMPORTANT:
+
+The directory structure on server must be:
+/home/royaldxd/crm.abra-logistic.com/
+└── api1/
+    └── vendor/
+        ├── get_notifications.php       ← Upload here
+        ├── mark_notification_read.php  ← Upload here
+        └── create_notification.php     ← Upload here
+
+If the "vendor" folder doesn't exist, create it first!
+
+═══════════════════════════════════════════════════════════════
+
+✅ AFTER UPLOAD:
+
+1. Notifications will load in app
+2. Red badge will show unread count
+3. Badge will disappear after opening notifications
+4. No more CORS errors!
+
+═══════════════════════════════════════════════════════════════

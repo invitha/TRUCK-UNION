@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify Server Update</title>
+</head>
+<body>
+    <h1>🔍 Verify Server File Updated</h1>
+    <button onclick="checkUpdate()">Check If Server Updated</button>
+    <div id="results"></div>
+
+    <script>
+    async function checkUpdate() {
+        const results = document.getElementById('results');
+        results.innerHTML = '<p>Checking server...</p>';
+        
+        // Test with minimal data to see if we get a proper error response
+        const testData = {
+            firebase_uid: 'test123'
+            // Missing required fields intentionally to trigger "Missing required fields" error
+        };
+        
+        try {
+            const response = await fetch('https://crm.abra-logistic.com/api1/vendor/submit_driver_kyc.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(testData)
+            });
+            
+            const responseText = await response.text();
+            
+            let status = '';
+            if (responseText.includes('Missing required fields')) {
+                status = '✅ SERVER FILE UPDATED CORRECTLY!';
+            } else if (response.status === 500) {
+                status = '❌ Server still has old file or other issues';
+            } else {
+                status = '⚠️ Unexpected response - check details below';
+            }
+            
+            results.innerHTML = `
+                <h2>${status}</h2>
+                <p><strong>HTTP Status:</strong> ${response.status}</p>
+                <p><strong>Response:</strong></p>
+                <pre>${responseText}</pre>
+                
+                ${responseText.includes('Missing required fields') ? 
+                  '<h3>🎉 GREAT! Your server file is updated. Now try the KYC submission in your Flutter app!</h3>' : 
+                  '<h3>📤 Please upload the submit_driver_kyc.php file to your server.</h3>'
+                }
+            `;
+            
+        } catch (error) {
+            results.innerHTML = `
+                <h2>❌ Connection Error</h2>
+                <p>${error.message}</p>
+            `;
+        }
+    }
+    </script>
+</body>
+</html>

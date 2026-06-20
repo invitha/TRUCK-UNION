@@ -1,0 +1,9 @@
+UPLOAD THESE 5 FILES TO YOUR SERVER:
+
+1. /api1/serve_driver_kyc_document.php (NEW FILE)
+2. /api1/serve_kyc_image.php (UPDATED FILE)  
+3. /driver_kyc_admin_panel.php (UPDATED FILE)
+4. /manage_driver_kyc.php (UPDATED FILE - if it exists)
+5. /test_driver_kyc_system.php (DIAGNOSTIC FILE - optional)
+
+Copy the content from the files shown below and paste into your server files.

@@ -1,0 +1,56 @@
+═══════════════════════════════════════════════════════════════
+  TEST NOTIFICATION URL - FIND WHERE FILES ARE
+═══════════════════════════════════════════════════════════════
+
+The app is calling:
+https://crm.abra-logistic.com/api1/vendor/get_notifications.php
+
+But you tested:
+https://crm.abra-logistic.com/api1/vendor/test_notifications.php
+
+So the files ARE in the correct location!
+
+═══════════════════════════════════════════════════════════════
+
+🧪 TEST THESE URLs IN BROWSER:
+
+1. Test get_notifications.php:
+   https://crm.abra-logistic.com/api1/vendor/get_notifications.php
+
+   Expected: JSON response (not 404)
+
+2. Test mark_notification_read.php:
+   https://crm.abra-logistic.com/api1/vendor/mark_notification_read.php
+
+   Expected: JSON response (not 404)
+
+═══════════════════════════════════════════════════════════════
+
+🔍 IF YOU GET 404 ERROR:
+
+The files are NOT in the correct location. Upload them to:
+/home/royaldxd/crm.abra-logistic.com/api1/vendor/
+
+NOT to:
+/home/royaldxd/crm.abra-logistic.com/api1_vendor/
+
+═══════════════════════════════════════════════════════════════
+
+✅ IF YOU GET JSON RESPONSE:
+
+The files ARE in the correct location. The issue is something else.
+
+Check app console for the EXACT error message.
+
+═══════════════════════════════════════════════════════════════
+
+🎯 MOST LIKELY ISSUE:
+
+You uploaded test_notifications.php but NOT the other 3 files!
+
+Make sure ALL 3 files are uploaded:
+- get_notifications.php
+- mark_notification_read.php  
+- create_notification.php
+
+═══════════════════════════════════════════════════════════════

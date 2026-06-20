@@ -1,0 +1,92 @@
+═══════════════════════════════════════════════════════════════
+  SIMPLE UPLOAD CHECKLIST - DO THESE 6 THINGS
+═══════════════════════════════════════════════════════════════
+
+Your code is ALREADY FIXED! Just upload these files to server:
+
+═══════════════════════════════════════════════════════════════
+
+STEP 1: Upload Image Server
+═══════════════════════════════════════════════════════════════
+Upload this file:
+  vendor_app/server_php/serve_kyc_image.php
+
+To this location:
+  /home/royaldxd/crm.abra-logistic.com/serve_kyc_image.php
+
+This fixes: Images not showing in admin panel
+
+═══════════════════════════════════════════════════════════════
+
+STEP 2: Upload Notification Files (3 files)
+═══════════════════════════════════════════════════════════════
+Upload these 3 files:
+  vendor_app/server_php/api1_vendor/get_notifications.php
+  vendor_app/server_php/api1_vendor/mark_notification_read.php
+  vendor_app/server_php/api1_vendor/create_notification.php
+
+To this location:
+  /home/royaldxd/crm.abra-logistic.com/api1/vendor/
+
+This fixes: Notification badge not showing (CORS error)
+
+═══════════════════════════════════════════════════════════════
+
+STEP 3: Upload Admin Panel
+═══════════════════════════════════════════════════════════════
+Upload this file:
+  vendor_app/admin_kyc_panel.html
+
+To this location:
+  /home/royaldxd/crm.abra-logistic.com/admin_kyc_panel.html
+
+This fixes: Revoke button not showing
+
+═══════════════════════════════════════════════════════════════
+
+STEP 4: Clear Browser Cache
+═══════════════════════════════════════════════════════════════
+After uploading admin_kyc_panel.html:
+
+Windows: Press Ctrl + Shift + R
+Mac: Press Cmd + Shift + R
+
+This ensures you see the new revoke button
+
+═══════════════════════════════════════════════════════════════
+
+STEP 5: Test Everything
+═══════════════════════════════════════════════════════════════
+1. Test images:
+   https://crm.abra-logistic.com/serve_kyc_image.php?uid=test&file=test.jpg
+   Should show "File not found" (not 404 error)
+
+2. Test notifications:
+   https://crm.abra-logistic.com/api1/vendor/get_notifications.php
+   Should show JSON (not CORS error)
+
+3. Test admin panel:
+   https://crm.abra-logistic.com/admin_kyc_panel.html
+   Should see revoke button for verified KYCs
+
+4. Test app:
+   Open vendor app → Dashboard
+   Should see red badge on notification icon
+
+═══════════════════════════════════════════════════════════════
+
+STEP 6: Verify Features
+═══════════════════════════════════════════════════════════════
+✓ Submit KYC → Images upload correctly
+✓ Admin panel → Images display when clicked
+✓ Admin approves → Notification sent to vendor
+✓ Dashboard → Red badge shows unread count
+✓ Open notifications → Badge disappears
+✓ Admin panel → Revoke button shows for verified KYCs
+✓ My Fleet → Only single "Add Vehicle" option (no bulk)
+
+═══════════════════════════════════════════════════════════════
+
+THAT'S IT! All your issues will be fixed after uploading these files.
+
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,101 @@
+LOCATION TRACKING & INTERNAL DASHBOARD - SETUP GUIDE
+=====================================================
+
+## WHAT WAS IMPLEMENTED:
+
+1. **Database Changes**
+   - Added location tracking columns to vehicles table
+   - Tracks: is_online, latitude, longitude, last_update, address
+
+2. **Backend APIs Created**
+   - update_driver_location.php - Updates driver location in real-time
+   - get_all_vehicles.php - Gets all vehicles for internal team
+
+3. **Internal Dashboard (HTML)**
+   - internal_vehicles_dashboard.html - Beautiful web dashboard
+   - Shows all vehicles in table format
+   - Real-time online/offline status
+   - Vehicle details (type, size, driver, vendor)
+   - Live location with Google Maps links
+   - Auto-refresh every 30 seconds
+   - Filter by status and online/offline
+
+4. **Driver App Updates**
+   - Automatically sends location every 30 seconds when logged in
+   - Sets driver online when app is open
+   - Sets driver offline when app closes
+   - Uses geolocator package for GPS
+
+## UPLOAD TO SERVER:
+
+1. Run SQL to add columns:
+   vendor_app/server_php/add_location_tracking_columns.sql
+
+2. Upload PHP files to: crm.abra-logistic.com/api1/vendor/
+   - update_driver_location.php
+   - get_all_vehicles.php
+
+3. Upload HTML dashboard to: crm.abra-logistic.com/
+   - internal_vehicles_dashboard.html
+
+## ACCESS DASHBOARD:
+
+Open in browser:
+https://crm.abra-logistic.com/internal_vehicles_dashboard.html
+
+## FLUTTER APP:
+
+Run in terminal:
+cd vendor_app
+flutter pub get
+flutter run -d chrome
+
+## HOW IT WORKS:
+
+1. Driver logs in with credentials from vendor
+2. App requests location permission
+3. App sends location to server every 30 seconds
+4. Driver shows as "Online" in internal dashboard
+5. Internal team can see:
+   - Which vehicles are online/offline
+   - Current location of each vehicle
+   - Vehicle details (type, size, etc.)
+   - Click "View Map" to see location on Google Maps
+6. When driver closes app, status changes to "Offline"
+
+## FEATURES:
+
+Internal Dashboard:
+✅ Total vehicles count
+✅ Online/Offline count
+✅ Filter by status (active/inactive)
+✅ Filter by online/offline
+✅ Search by vehicle number, driver name, vendor
+✅ Auto-refresh every 30 seconds
+✅ Click location to view on Google Maps
+✅ Beautiful gradient design
+✅ Responsive table layout
+
+Driver App:
+✅ Automatic location tracking
+✅ Sends location every 30 seconds
+✅ Online status when app is open
+✅ Offline status when app closes
+✅ No manual action needed from driver
+
+## NEXT STEPS:
+
+1. Upload SQL file and run in phpMyAdmin
+2. Upload PHP files to server
+3. Upload HTML dashboard to server
+4. Run flutter pub get
+5. Test driver login and location tracking
+6. Open internal dashboard to see vehicles
+
+## SECURITY NOTE:
+
+The internal dashboard is currently public. You may want to add:
+- Password protection
+- Admin login
+- IP whitelist
+- HTTPS only access

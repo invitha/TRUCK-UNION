@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Notifications CORS</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+        .success { color: green; }
+        .error { color: red; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔔 Test Notifications API with CORS</h1>
+    
+    <button onclick="testGetNotifications()">Test Get Notifications</button>
+    <button onclick="testMarkRead()">Test Mark All Read</button>
+    
+    <div id="result"></div>
+
+    <script>
+        const API_URL = 'https://crm.abra-logistic.com/api1/vendor';
+        const TEST_UID = 'qHa4BnKV1wSanQHE1QssUyF4wdH3'; // Your test user
+
+        async function testGetNotifications() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>⏳ Testing get_notifications.php...</p>';
+            
+            try {
+                const response = await fetch(`${API_URL}/get_notifications.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        firebase_uid: TEST_UID,
+                        limit: 10,
+                        offset: 0
+                    })
+                });
+                
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <h2 class="success">✅ CORS Working!</h2>
+                    <p><strong>Status:</strong> ${data.status}</p>
+                    <p><strong>Unread Count:</strong> ${data.unread_count}</p>
+                    <p><strong>Total Notifications:</strong> ${data.total}</p>
+                    <h3>Response:</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h2 class="error">❌ CORS Error!</h2>
+                    <p>${error.message}</p>
+                    <p>Check browser console for details.</p>
+                `;
+                console.error('Error:', error);
+            }
+        }
+
+        async function testMarkRead() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>⏳ Testing mark_notification_read.php...</p>';
+            
+            try {
+                const response = await fetch(`${API_URL}/mark_notification_read.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        firebase_uid: TEST_UID,
+                        mark_all: true
+                    })
+                });
+                
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <h2 class="success">✅ CORS Working!</h2>
+                    <p><strong>Status:</strong> ${data.status}</p>
+                    <p><strong>Message:</strong> ${data.message}</p>
+                    <h3>Response:</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h2 class="error">❌ CORS Error!</h2>
+                    <p>${error.message}</p>
+                    <p>Check browser console for details.</p>
+                `;
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
