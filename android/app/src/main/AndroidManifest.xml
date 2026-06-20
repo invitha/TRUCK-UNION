@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
     
     <!-- Core -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -13,15 +14,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29"/>
 
-    <!-- Media — Android 13+ (API 33+) -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
-
     <!-- Push Notifications — Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
-    <!-- Advertising ID — required by Facebook SDK & Google Play Services -->
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 
     <!-- Vibration for notification sound -->
     <uses-permission android:name="android.permission.VIBRATE"/>
