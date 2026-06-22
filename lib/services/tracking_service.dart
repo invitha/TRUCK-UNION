@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 /// Unified tracking service for Facebook Meta SDK + Firebase Analytics.
 ///
@@ -33,26 +32,10 @@ class TrackingService {
         return;
       }
 
-      // 1. Request iOS App Tracking Transparency (required for IDFA on iOS 14+)
+      // ATT plugin removed — incompatible with iOS 26
+      // Facebook advertiser tracking disabled by default (safe fallback)
       if (defaultTargetPlatform == TargetPlatform.iOS) {
-        var currentStatus = await AppTrackingTransparency.trackingAuthorizationStatus;
-
-        // Only request if not yet determined — avoids dialog on re-launch
-        if (currentStatus == TrackingStatus.notDetermined) {
-          // A short delay gives the Flutter engine time to render the UI completely
-          await Future.delayed(const Duration(milliseconds: 1000));
-          currentStatus = await AppTrackingTransparency.requestTrackingAuthorization();
-          debugPrint('📱 ATT Status requested: $currentStatus');
-        } else {
-          debugPrint('📱 ATT Status existing: $currentStatus');
-        }
-
-        // Enable Facebook advertiser ID collection only if user authorizes
-        if (currentStatus == TrackingStatus.authorized) {
-          await _facebook.setAdvertiserTracking(enabled: true);
-        } else {
-          await _facebook.setAdvertiserTracking(enabled: false);
-        }
+        await _facebook.setAdvertiserTracking(enabled: false);
       }
 
       // 2. Enable Facebook SDK auto-logging
