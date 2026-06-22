@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>907690538063-mf6u35c75cs0lu2m95nhj0cmhs8djrki.apps.googleusercontent.com</string>
+	<string>907690538063-4r1bkkee7ikomg3guhvjfgfueel6i3bc.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.907690538063-mf6u35c75cs0lu2m95nhj0cmhs8djrki</string>
+	<string>com.googleusercontent.apps.907690538063-4r1bkkee7ikomg3guhvjfgfueel6i3bc</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>907690538063-ui5ta0jna98vdg521gd3f1snmma7mfsl.apps.googleusercontent.com</string>
+	<string>907690538063-3gspoj4m1vd6vi7jt8r1anlls8m2t70r.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCVV1LaY05L0304a9pV7dtjaJ2khV4PULQ</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.abraglobal.vendor</string>
+	<string>com.abraglobal.abraVendorApp</string>
 	<key>PROJECT_ID</key>
 	<string>truck-union-vendor</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:907690538063:ios:8d87796baecf7f79d9263a</string>
+	<string>1:907690538063:ios:0a08b9d86fedd3bbd9263a</string>
 </dict>
 </plist>

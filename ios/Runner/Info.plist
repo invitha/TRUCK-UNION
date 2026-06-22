@@ -22,6 +22,10 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>GIDClientID</key>
+	<string>907690538063-4r1bkkee7ikomg3guhvjfgfueel6i3bc.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -47,8 +51,31 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>flutter</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Main</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	
 	<!-- Permissions -->
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>Abra Vendor sends order assignments, pickup alerts, and delivery status notifications.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access is required to photograph your KYC documents and vehicle registration papers for verification.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -73,9 +100,6 @@
 	</array>
 
 	<!-- Google Sign-In & Firebase -->
-	<!-- IMPORTANT: Replace REVERSED_CLIENT_ID below with the value from your GoogleService-Info.plist -->
-	<!-- Download GoogleService-Info.plist from Firebase Console > truck-union-vendor project > iOS app -->
-	<!-- Place it at ios/Runner/GoogleService-Info.plist -->
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -83,7 +107,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>$(REVERSED_CLIENT_ID)</string>
+				<string>com.googleusercontent.apps.907690538063-4r1bkkee7ikomg3guhvjfgfueel6i3bc</string>
 			</array>
 		</dict>
 		<dict>
