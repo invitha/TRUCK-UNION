@@ -86,33 +86,11 @@
 				<string>com.googleusercontent.apps.907690538063-4r1bkkee7ikomg3guhvjfgfueel6i3bc</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb956731873793973</string>
-			</array>
-		</dict>
 	</array>
-
-	<!-- Facebook App Events -->
-	<key>FacebookAppID</key>
-	<string>956731873793973</string>
-	<key>FacebookClientToken</key>
-	<string>493f3fa7c0cb0206045872f92586be0c</string>
-	<key>FacebookDisplayName</key>
-	<string>Abra Vendor</string>
-	<key>FacebookAutoLogAppEventsEnabled</key>
-	<true/>
-	<key>FacebookAdvertiserIDCollectionEnabled</key>
-	<true/>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>This identifier will be used to deliver personalized ads to you.</string>
 
 	<!-- URL schemes this app can open (url_launcher + maps) -->
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>fbapi</string>
-		<string>fb-messenger-share-api</string>
 		<string>googlemaps</string>
 		<string>comgooglemaps</string>
 		<string>maps</string>

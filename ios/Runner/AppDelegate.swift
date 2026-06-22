@@ -1,6 +1,5 @@
 import Flutter
 import UIKit
-import FBSDKCoreKit
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -11,18 +10,12 @@ import FBSDKCoreKit
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    // Facebook SDK init
-    ApplicationDelegate.shared.application(
-        application,
-        didFinishLaunchingWithOptions: launchOptions
-    )
-
     // Start Flutter engine explicitly so the messenger is live before plugin registration
     let engine = FlutterEngine(name: "main_engine")
     engine.run()
     flutterEngine = engine
 
-    // Register plugins with the running engine — registrar.messenger() is guaranteed non-nil
+    // Register plugins with the running engine
     GeneratedPluginRegistrant.register(with: engine)
 
     // Build the window programmatically
