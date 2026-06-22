@@ -108,9 +108,6 @@ void main() async {
     debugPrint('Firebase initialization error: $e');
   }
 
-  await _initLocalNotifications();
-  await _requestNotificationPermissions();
-
   // Initialize unified tracking (Facebook + Firebase + iOS ATT)
   await trackingService.initialize();
 
@@ -132,6 +129,8 @@ class _VendorAppState extends State<VendorApp> {
   @override
   void initState() {
     super.initState();
+    _initLocalNotifications();
+    _requestNotificationPermissions();
     _setupForegroundMessaging();
   }
 

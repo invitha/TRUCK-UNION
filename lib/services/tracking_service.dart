@@ -35,12 +35,24 @@ class TrackingService {
 
       // 1. Request iOS App Tracking Transparency (required for IDFA on iOS 14+)
       if (defaultTargetPlatform == TargetPlatform.iOS) {
-        final status = await AppTrackingTransparency.requestTrackingAuthorization();
-        debugPrint('📱 ATT Status: $status');
+        var currentStatus = await AppTrackingTransparency.trackingAuthorizationStatus;
+
+        // Only request if not yet determined — avoids dialog on re-launch
+        if (currentStatus == TrackingStatus.notDetermined) {
+          // A short delay gives the Flutter engine time to render the UI completely
+          await Future.delayed(const Duration(milliseconds: 1000));
+          currentStatus = await AppTrackingTransparency.requestTrackingAuthorization();
+          debugPrint('📱 ATT Status requested: $currentStatus');
+        } else {
+          debugPrint('📱 ATT Status existing: $currentStatus');
+        }
 
         // Enable Facebook advertiser ID collection only if user authorizes
-        final isAuthorized = status.toString().contains('authorized');
-        await _facebook.setAdvertiserTracking(enabled: isAuthorized);
+        if (currentStatus == TrackingStatus.authorized) {
+          await _facebook.setAdvertiserTracking(enabled: true);
+        } else {
+          await _facebook.setAdvertiserTracking(enabled: false);
+        }
       }
 
       // 2. Enable Facebook SDK auto-logging

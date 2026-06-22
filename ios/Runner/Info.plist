@@ -118,10 +118,6 @@
 		</dict>
 	</array>
 
-	<!-- Firebase Cloud Messaging -->
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
-
 	<!-- Facebook App Events -->
 	<key>FacebookAppID</key>
 	<string>956731873793973</string>
