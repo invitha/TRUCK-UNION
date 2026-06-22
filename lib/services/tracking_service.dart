@@ -1,158 +1,41 @@
 import 'package:flutter/foundation.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 
-/// Unified tracking service using Firebase Analytics.
+/// Tracking service — stubbed for iOS 26 compatibility.
 ///
-/// Facebook App Events removed — incompatible with iOS 26 (swift_getObjectType crash).
-/// All events are logged to Firebase Analytics only.
+/// firebase_analytics and facebook_app_events both use Swift plugins
+/// that are incompatible with iOS 26. All event logging is a no-op
+/// until Flutter releases iOS 26-compatible binaries.
 class TrackingService {
   static final TrackingService _instance = TrackingService._internal();
   factory TrackingService() => _instance;
   TrackingService._internal();
 
-  final FirebaseAnalytics _firebase = FirebaseAnalytics.instance;
-
   bool _initialized = false;
 
-  // ─── Initialization ──────────────────────────────────────────────────────
-
   Future<void> initialize() async {
-    try {
-      _initialized = true;
-      debugPrint('✅ TrackingService: Initialized (Firebase only)');
-    } catch (e) {
-      debugPrint('⚠️ TrackingService Error during init: $e');
-    }
+    _initialized = true;
+    debugPrint('✅ TrackingService: Initialized (stubbed — iOS 26 compatibility mode)');
   }
 
-  // ─── Core Auth Events ─────────────────────────────────────────────────────
+  Future<void> logRegistration({String method = 'email'}) async => _noop('sign_up');
+  Future<void> logLogin({String method = 'email'}) async => _noop('login');
+  Future<void> logScreenView(String screenName) async => _noop('screen_view');
+  Future<void> logViewVehicle(String vehicleType, {String? vehicleId}) async => _noop('view_item');
+  Future<void> logKYCStarted() async => _noop('kyc_started');
+  Future<void> logKYCSubmitted() async => _noop('kyc_submitted');
+  Future<void> logKYCVerified() async => _noop('kyc_verified');
+  Future<void> logVehicleAdded(String vehicleType) async => _noop('vehicle_added');
+  Future<void> logFleetAssigned() async => _noop('fleet_assigned');
+  Future<void> logOrderCompleted({required double amount, String currency = 'INR', String? orderId}) async => _noop('purchase');
+  Future<void> logPaymentInitiated(double amount) async => _noop('begin_checkout');
+  Future<void> logSupportContacted(String method) async => _noop('support_contacted');
+  Future<void> logNotificationViewed() async => _noop('notification_viewed');
+  Future<void> logEvent(String eventName, {Map<String, Object>? parameters}) async => _noop(eventName);
+  Future<void> setUserId(String userId) async => _noop('set_user_id');
+  Future<void> setUserProperties({String? userType, String? kycStatus, String? vehicleCount}) async {}
 
-  Future<void> logRegistration({String method = 'email'}) async {
-    await _log('sign_up', {'method': method});
-  }
-
-  Future<void> logLogin({String method = 'email'}) async {
-    await _log('login', {'method': method});
-  }
-
-  // ─── Content / Screen Events ─────────────────────────────────────────────
-
-  Future<void> logScreenView(String screenName) async {
-    await _log('screen_view', {'screen_name': screenName});
-  }
-
-  Future<void> logViewVehicle(String vehicleType, {String? vehicleId}) async {
-    await _log('view_item', {
-      'item_category': 'vehicle',
-      'item_id': vehicleId ?? vehicleType,
-      'item_name': vehicleType,
-    });
-  }
-
-  // ─── KYC / Onboarding Events ──────────────────────────────────────────────
-
-  Future<void> logKYCStarted() async {
-    await _log('kyc_started');
-  }
-
-  Future<void> logKYCSubmitted() async {
-    await _log('kyc_submitted');
-  }
-
-  Future<void> logKYCVerified() async {
-    await _log('kyc_verified');
-  }
-
-  // ─── Vehicle / Fleet Events ───────────────────────────────────────────────
-
-  Future<void> logVehicleAdded(String vehicleType) async {
-    await _log('vehicle_added', {'vehicle_type': vehicleType});
-  }
-
-  Future<void> logFleetAssigned() async {
-    await _log('fleet_assigned');
-  }
-
-  // ─── Order / Revenue Events ───────────────────────────────────────────────
-
-  Future<void> logOrderCompleted({
-    required double amount,
-    String currency = 'INR',
-    String? orderId,
-  }) async {
-    await _log('purchase', {
-      'value': amount,
-      'currency': currency,
-      if (orderId != null) 'transaction_id': orderId,
-    });
-  }
-
-  Future<void> logPaymentInitiated(double amount) async {
-    await _log('begin_checkout', {'value': amount, 'currency': 'INR'});
-  }
-
-  // ─── Support / Engagement Events ─────────────────────────────────────────
-
-  Future<void> logSupportContacted(String method) async {
-    await _log('support_contacted', {'method': method});
-  }
-
-  Future<void> logNotificationViewed() async {
-    await _log('notification_viewed');
-  }
-
-  // ─── Generic / Custom Events ──────────────────────────────────────────────
-
-  Future<void> logEvent(
-    String eventName, {
-    Map<String, Object>? parameters,
-  }) async {
-    await _log(eventName, parameters);
-  }
-
-  // ─── User Identity ────────────────────────────────────────────────────────
-
-  Future<void> setUserId(String userId) async {
-    try {
-      await _firebase.setUserId(id: userId);
-      debugPrint('📊 Tracking: User ID set');
-    } catch (e) {
-      debugPrint('⚠️ Tracking setUserId error: $e');
-    }
-  }
-
-  Future<void> setUserProperties({
-    String? userType,
-    String? kycStatus,
-    String? vehicleCount,
-  }) async {
-    try {
-      if (userType != null) {
-        await _firebase.setUserProperty(name: 'user_type', value: userType);
-      }
-      if (kycStatus != null) {
-        await _firebase.setUserProperty(name: 'kyc_status', value: kycStatus);
-      }
-      if (vehicleCount != null) {
-        await _firebase.setUserProperty(name: 'vehicle_count', value: vehicleCount);
-      }
-    } catch (e) {
-      debugPrint('⚠️ Tracking setUserProperties error: $e');
-    }
-  }
-
-  // ─── Private Helper ───────────────────────────────────────────────────────
-
-  Future<void> _log(String eventName, [Map<String, Object>? params]) async {
-    if (!_initialized) {
-      debugPrint('⚠️ TrackingService not initialized — call initialize() first');
-    }
-    try {
-      await _firebase.logEvent(name: eventName, parameters: params);
-      debugPrint('📊 Tracked: $eventName');
-    } catch (e) {
-      debugPrint('⚠️ Firebase tracking error ($eventName): $e');
-    }
+  void _noop(String event) {
+    debugPrint('📊 Tracking (stubbed): $event');
   }
 }
 

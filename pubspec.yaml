@@ -1,7 +1,7 @@
 name: abra_vendor_app
 description: Abra Global Shipping - Vendor Portal
 publish_to: 'none'
-version: 1.0.0+27
+version: 1.0.0+28
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -14,7 +14,7 @@ dependencies:
   firebase_core: ^3.9.0
   firebase_auth: ^5.4.0
   firebase_messaging: ^15.2.0
-  firebase_analytics: ^11.4.0
+  # firebase_analytics removed — Swift plugin incompatible with iOS 26
   
   # State Management
   flutter_riverpod: ^2.6.1
