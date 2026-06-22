@@ -58,21 +58,21 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBXjpjjSHDmA4RefMWFKKPJnIVWQytuR8s',
-    appId: '1:907690538063:ios:8d87796baecf7f79d9263a',
+    apiKey: 'AIzaSyCVV1LaY05L0304a9pV7dtjaJ2khV4PULQ',
+    appId: '1:907690538063:ios:0a08b9d86fedd3bbd9263a',
     messagingSenderId: '907690538063',
     projectId: 'truck-union-vendor',
     storageBucket: 'truck-union-vendor.firebasestorage.app',
-    iosBundleId: 'com.abraglobal.vendor',
+    iosBundleId: 'com.abraglobal.abraVendorApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBXjpjjSHDmA4RefMWFKKPJnIVWQytuR8s',
-    appId: '1:907690538063:ios:8d87796baecf7f79d9263a',
+    apiKey: 'AIzaSyCVV1LaY05L0304a9pV7dtjaJ2khV4PULQ',
+    appId: '1:907690538063:ios:0a08b9d86fedd3bbd9263a',
     messagingSenderId: '907690538063',
     projectId: 'truck-union-vendor',
     storageBucket: 'truck-union-vendor.firebasestorage.app',
-    iosBundleId: 'com.abraglobal.vendor',
+    iosBundleId: 'com.abraglobal.abraVendorApp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
