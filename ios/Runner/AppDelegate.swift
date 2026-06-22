@@ -12,7 +12,8 @@ import FBSDKCoreKit
         application,
         didFinishLaunchingWithOptions: launchOptions
     )
+    let result = super.application(application, didFinishLaunchingWithOptions: launchOptions)
     GeneratedPluginRegistrant.register(with: self)
-    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    return result
   }
 }
