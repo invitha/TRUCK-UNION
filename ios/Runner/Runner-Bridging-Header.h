@@ -1,2 +1,1 @@
-#import "SafePluginRegistrant.h"
-#import "SharedPreferencesObjCPlugin.h"
+#import "GeneratedPluginRegistrant.h"
