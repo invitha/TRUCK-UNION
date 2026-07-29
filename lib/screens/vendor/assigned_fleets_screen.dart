@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../config/app_theme.dart';
 import '../../services/api_service.dart';
@@ -26,10 +27,16 @@ class _AssignedFleetsScreenState extends State<AssignedFleetsScreen> with Single
   }
 
   Future<void> _loadAssignments() async {
+    if (!mounted) return;
     setState(() => _isLoading = true);
     
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
+    if (user == null) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+      return;
+    }
 
     try {
       // Load pending and active assignments for the "Active" tab
@@ -88,6 +95,9 @@ class _AssignedFleetsScreenState extends State<AssignedFleetsScreen> with Single
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
+        if (kDebugMode) {
+          print('Error loading assignments: $e');
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error loading assignments: $e')),
         );
@@ -96,6 +106,8 @@ class _AssignedFleetsScreenState extends State<AssignedFleetsScreen> with Single
   }
 
   Future<void> _handleVendorAction(Map<String, dynamic> assignment, String newStatus) async {
+    if (!mounted) return;
+    
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -104,7 +116,12 @@ class _AssignedFleetsScreenState extends State<AssignedFleetsScreen> with Single
 
     try {
       final user = FirebaseAuth.instance.currentUser;
-      if (user == null) return;
+      if (user == null) {
+        if (mounted) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+        return;
+      }
       
       final response = await ApiService.updateFleetAssignmentStatus(
         assignmentId: assignment['id'].toString(),
@@ -118,7 +135,7 @@ class _AssignedFleetsScreenState extends State<AssignedFleetsScreen> with Single
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Successfully updated status to ${newStatus.toUpperCase()}'), backgroundColor: Colors.green),
           );
-          _loadAssignments();
+          await _loadAssignments();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(response['message'] ?? 'Failed to update'), backgroundColor: Colors.red),
@@ -128,6 +145,9 @@ class _AssignedFleetsScreenState extends State<AssignedFleetsScreen> with Single
     } catch (e) {
       if (mounted) {
         Navigator.of(context, rootNavigator: true).pop(); // Close loading
+        if (kDebugMode) {
+          print('Error handling vendor action: $e');
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
         );
@@ -985,6 +1005,8 @@ class _AssignedFleetsScreenState extends State<AssignedFleetsScreen> with Single
 
   // ── TRACK DRIVER — fetch live location and show options ─────────────────
   Future<void> _trackDriver(Map<String, dynamic> assignment) async {
+    if (!mounted) return;
+    
     final vehicleId = int.tryParse(assignment['vehicle_id']?.toString() ?? '0') ?? 0;
     if (vehicleId <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -1014,307 +1036,342 @@ class _AssignedFleetsScreenState extends State<AssignedFleetsScreen> with Single
       ),
     );
 
-    final result = await ApiService.getDriverLocation(vehicleId: vehicleId);
-    if (!mounted) return;
-    Navigator.of(context, rootNavigator: true).pop(); // close loading
+    try {
+      final result = await ApiService.getDriverLocation(vehicleId: vehicleId);
+      if (!mounted) return;
+      Navigator.of(context, rootNavigator: true).pop(); // close loading
 
-    if (result['status'] != 'success') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result['message'] ?? 'Failed to fetch location'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    final bool hasLocation = result['has_location'] == true;
-    final bool isOnline = result['is_online'] == true;
-    final double? lat = result['latitude'] != null ? double.tryParse(result['latitude'].toString()) : null;
-    final double? lng = result['longitude'] != null ? double.tryParse(result['longitude'].toString()) : null;
-    final String driverName = result['driver_name'] ?? assignment['driver_name'] ?? 'Driver';
-    final String vehicleNo = result['vehicle_number'] ?? assignment['vehicle_number'] ?? '';
-    final String lastUpdated = result['last_updated'] ?? '';
-    final String address = result['address'] ?? '';
-
-    // Format last updated time
-    String updatedText = 'Unknown';
-    if (lastUpdated.isNotEmpty) {
-      try {
-        final dt = DateTime.parse(lastUpdated).toLocal();
-        final diff = DateTime.now().difference(dt);
-        if (diff.inMinutes < 1) {
-          updatedText = 'Just now';
-        } else if (diff.inMinutes < 60) {
-          updatedText = '${diff.inMinutes} min ago';
-        } else if (diff.inHours < 24) {
-          updatedText = '${diff.inHours} hr ago';
-        } else {
-          updatedText = DateFormat('dd MMM, hh:mm a').format(dt);
-        }
-      } catch (_) {
-        updatedText = lastUpdated;
+      if (result['status'] != 'success') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['message'] ?? 'Failed to fetch location'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
       }
-    }
 
-    // Show location bottom sheet
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (ctx) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Handle
-            Container(
-              width: 40, height: 4,
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
+      final bool hasLocation = result['has_location'] == true;
+      final bool isOnline = result['is_online'] == true;
+      final double? lat = result['latitude'] != null ? double.tryParse(result['latitude'].toString()) : null;
+      final double? lng = result['longitude'] != null ? double.tryParse(result['longitude'].toString()) : null;
+      final String driverName = result['driver_name'] ?? assignment['driver_name'] ?? 'Driver';
+      final String vehicleNo = result['vehicle_number'] ?? assignment['vehicle_number'] ?? '';
+      final String lastUpdated = result['last_updated'] ?? '';
+      final String address = result['address'] ?? '';
 
-            // Header
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF0D2E6E), Color(0xFF1E40AF)],
-                    ),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: const Icon(Icons.location_on_rounded, color: Colors.white, size: 24),
+      // Format last updated time
+      String updatedText = 'Unknown';
+      if (lastUpdated.isNotEmpty) {
+        try {
+          final dt = DateTime.parse(lastUpdated).toLocal();
+          final diff = DateTime.now().difference(dt);
+          if (diff.inMinutes < 1) {
+            updatedText = 'Just now';
+          } else if (diff.inMinutes < 60) {
+            updatedText = '${diff.inMinutes} min ago';
+          } else if (diff.inHours < 24) {
+            updatedText = '${diff.inHours} hr ago';
+          } else {
+            updatedText = DateFormat('dd MMM, hh:mm a').format(dt);
+          }
+        } catch (_) {
+          updatedText = lastUpdated;
+        }
+      }
+
+      if (!mounted) return;
+
+      // Show location bottom sheet
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (ctx) => Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Handle
+              Container(
+                width: 40, height: 4,
+                margin: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
                 ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Driver Live Location',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: AppTheme.textPrimary,
-                        ),
+              ),
+
+              // Header
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF0D2E6E), Color(0xFF1E40AF)],
                       ),
-                      Text(
-                        '$driverName · $vehicleNo',
-                        style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(Icons.location_on_rounded, color: Colors.white, size: 24),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Driver Live Location',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            color: AppTheme.textPrimary,
+                          ),
+                        ),
+                        Text(
+                          '$driverName · $vehicleNo',
+                          style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Online indicator
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: (isOnline ? Colors.green : Colors.grey).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: isOnline ? Colors.green : Colors.grey,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 7, height: 7,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isOnline ? Colors.green : Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          isOnline ? 'Online' : 'Offline',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: isOnline ? Colors.green : Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              if (hasLocation && lat != null && lng != null) ...[
+                // Location info card
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: Colors.grey[200]!),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.my_location_rounded, size: 16, color: AppTheme.primaryBlue),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Coordinates',
+                            style: TextStyle(fontSize: 12, color: Colors.grey[600], fontWeight: FontWeight.w600),
+                          ),
+                          const Spacer(),
+                          Text(
+                            '${lat.toStringAsFixed(5)}, ${lng.toStringAsFixed(5)}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.textPrimary,
+                              fontFamily: 'monospace',
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (address.isNotEmpty) ...[
+                        const Divider(height: 16),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.place_rounded, size: 16, color: Colors.red[400]),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                address,
+                                style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      const Divider(height: 16),
+                      Row(
+                        children: [
+                          Icon(Icons.access_time_rounded, size: 16, color: Colors.orange[400]),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Last updated: $updatedText',
+                            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-                // Online indicator
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: (isOnline ? Colors.green : Colors.grey).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: isOnline ? Colors.green : Colors.grey,
+
+                const SizedBox(height: 16),
+
+                // Open in Google Maps button
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      Navigator.pop(ctx);
+                      await _openGoogleMaps(lat, lng);
+                    },
+                    icon: const Icon(Icons.map_rounded),
+                    label: const Text(
+                      'Open in Google Maps',
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF4285F4), // Google blue
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      elevation: 4,
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 7, height: 7,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: isOnline ? Colors.green : Colors.grey,
-                        ),
+                ),
+
+                const SizedBox(height: 10),
+
+                // Refresh location button
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                      _trackDriver(assignment); // Re-fetch
+                    },
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: const Text('Refresh Location'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppTheme.primaryBlue,
+                      side: const BorderSide(color: AppTheme.primaryBlue),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
                       ),
-                      const SizedBox(width: 5),
+                    ),
+                  ),
+                ),
+              ] else ...[
+                // No location yet
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: Colors.orange.withOpacity(0.2)),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.location_off_rounded, color: Colors.orange[400], size: 48),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'No location data yet',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 6),
                       Text(
-                        isOnline ? 'Online' : 'Offline',
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          color: isOnline ? Colors.green : Colors.grey,
+                        'The driver\'s location will appear here once they go online and start moving.',
+                        style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          Navigator.pop(ctx);
+                          _trackDriver(assignment);
+                        },
+                        icon: const Icon(Icons.refresh_rounded),
+                        label: const Text('Try Again'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.orange,
+                          side: const BorderSide(color: Colors.orange),
                         ),
                       ),
                     ],
                   ),
                 ),
               ],
-            ),
-
-            const SizedBox(height: 20),
-
-            if (hasLocation && lat != null && lng != null) ...[
-              // Location info card
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Colors.grey[200]!),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.my_location_rounded, size: 16, color: AppTheme.primaryBlue),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Coordinates',
-                          style: TextStyle(fontSize: 12, color: Colors.grey[600], fontWeight: FontWeight.w600),
-                        ),
-                        const Spacer(),
-                        Text(
-                          '${lat.toStringAsFixed(5)}, ${lng.toStringAsFixed(5)}',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.textPrimary,
-                            fontFamily: 'monospace',
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (address.isNotEmpty) ...[
-                      const Divider(height: 16),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.place_rounded, size: 16, color: Colors.red[400]),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              address,
-                              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    const Divider(height: 16),
-                    Row(
-                      children: [
-                        Icon(Icons.access_time_rounded, size: 16, color: Colors.orange[400]),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Last updated: $updatedText',
-                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Open in Google Maps button
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    Navigator.pop(ctx);
-                    final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$lng';
-                    final uri = Uri.parse(url);
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(uri, mode: LaunchMode.externalApplication);
-                    } else {
-                      if (mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Could not open Google Maps')),
-                        );
-                      }
-                    }
-                  },
-                  icon: const Icon(Icons.map_rounded),
-                  label: const Text(
-                    'Open in Google Maps',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4285F4), // Google blue
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    elevation: 4,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              // Refresh location button
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(ctx);
-                    _trackDriver(assignment); // Re-fetch
-                  },
-                  icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Refresh Location'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppTheme.primaryBlue,
-                    side: const BorderSide(color: AppTheme.primaryBlue),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                ),
-              ),
-            ] else ...[
-              // No location yet
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.orange.withOpacity(0.05),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Colors.orange.withOpacity(0.2)),
-                ),
-                child: Column(
-                  children: [
-                    Icon(Icons.location_off_rounded, color: Colors.orange[400], size: 48),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'No location data yet',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'The driver\'s location will appear here once they go online and start moving.',
-                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    OutlinedButton.icon(
-                      onPressed: () {
-                        Navigator.pop(ctx);
-                        _trackDriver(assignment);
-                      },
-                      icon: const Icon(Icons.refresh_rounded),
-                      label: const Text('Try Again'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.orange,
-                        side: const BorderSide(color: Colors.orange),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
-          ],
+          ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      if (mounted) {
+        Navigator.of(context, rootNavigator: true).pop(); // close loading
+        if (kDebugMode) {
+          print('Error tracking driver: $e');
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error tracking driver: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  // iOS-safe URL launcher helper
+  Future<void> _openGoogleMaps(double lat, double lng) async {
+    try {
+      final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$lng';
+      final uri = Uri.parse(url);
+      
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        // Fallback for iOS issues
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Could not open Google Maps')),
+          );
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error opening Google Maps: $e');
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not open Google Maps')),
+        );
+      }
+    }
   }
 
   @override

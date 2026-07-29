@@ -107,10 +107,21 @@ void main() async {
     if (details.exception is MissingPluginException ||
         (details.exception is PlatformException &&
          (details.exception as PlatformException).code == 'channel-error')) {
-      debugPrint('⚠️ Plugin unavailable (iOS 26 mode): ${details.exception}');
+      debugPrint('⚠️ Plugin unavailable (iOS compatibility mode): ${details.exception}');
       return;
     }
     FlutterError.presentError(details);
+  };
+
+  // Catch errors in async operations
+  PlatformDispatcher.instance.onError = (error, stack) {
+    if (error is MissingPluginException ||
+        (error is PlatformException &&
+         (error as PlatformException).code == 'channel-error')) {
+      debugPrint('⚠️ Async plugin error (iOS compatibility mode): $error');
+      return true;
+    }
+    return false;
   };
 
   try {
@@ -122,7 +133,7 @@ void main() async {
     debugPrint('Firebase initialization error: $e');
   }
 
-  // Initialize tracking (stubbed for iOS 26)
+  // Initialize tracking (stubbed for iOS compatibility)
   await trackingService.initialize();
 
   runApp(
