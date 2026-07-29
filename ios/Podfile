@@ -49,4 +49,50 @@ post_install do |installer|
       config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
     end
   end
+
+  # iOS 26 compatibility patch — remove Swift plugins from GeneratedPluginRegistrant.m
+  # These plugins crash at launch with swift_getObjectType on iOS 26 (Flutter SDK binary incompatibility)
+  # They remain in pubspec.yaml so Dart code compiles; they are simply not registered as native plugins.
+  # Features using them will silently no-op on iOS 26 until Flutter releases an iOS 26-compatible binary.
+  registrant_path = File.join(File.dirname(__FILE__), 'Runner', 'GeneratedPluginRegistrant.m')
+  if File.exist?(registrant_path)
+    content = File.read(registrant_path)
+
+    # Import blocks to remove (Swift plugins)
+    swift_imports = %w[
+      facebook_app_events
+      firebase_analytics
+      app_tracking_transparency
+      file_picker
+      geocoding_ios
+      mobile_scanner
+      share_plus
+      shared_preferences_foundation
+      sign_in_with_apple
+      url_launcher_ios
+    ]
+    swift_imports.each do |plugin|
+      content.gsub!(/\n#if __has_include\(<#{Regexp.escape(plugin)}\/[^>]+>\).*?#endif/m, '')
+    end
+
+    # Registration lines to remove
+    swift_classes = %w[
+      FacebookAppEventsPlugin
+      FirebaseAnalyticsPlugin
+      AppTrackingTransparencyPlugin
+      FilePickerPlugin
+      GeocodingPlugin
+      MobileScannerPlugin
+      FPPSharePlusPlugin
+      SharedPreferencesPlugin
+      SignInWithApplePlugin
+      URLLauncherPlugin
+    ]
+    swift_classes.each do |klass|
+      content.gsub!(/[ \t]*\[#{Regexp.escape(klass)} registerWithRegistrar:[^\]]+\];\n/, '')
+    end
+
+    File.write(registrant_path, content)
+    puts "✅ iOS 26 patch applied — Swift plugins removed from GeneratedPluginRegistrant.m"
+  end
 end

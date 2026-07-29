@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -99,6 +100,19 @@ void _showLocalNotification(RemoteMessage message) {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Global handler: catch MissingPluginException from Swift plugins disabled
+  // for iOS 26 compatibility (url_launcher, sign_in_with_apple, mobile_scanner, etc.)
+  // Without this, tapping a button that uses a disabled plugin would crash the app.
+  FlutterError.onError = (FlutterErrorDetails details) {
+    if (details.exception is MissingPluginException ||
+        (details.exception is PlatformException &&
+         (details.exception as PlatformException).code == 'channel-error')) {
+      debugPrint('⚠️ Plugin unavailable (iOS 26 mode): ${details.exception}');
+      return;
+    }
+    FlutterError.presentError(details);
+  };
+
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -108,7 +122,7 @@ void main() async {
     debugPrint('Firebase initialization error: $e');
   }
 
-  // Initialize unified tracking (Facebook + Firebase + iOS ATT)
+  // Initialize tracking (stubbed for iOS 26)
   await trackingService.initialize();
 
   runApp(
