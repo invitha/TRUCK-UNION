@@ -128,7 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Join Abra as a vendor partner',
+                  'Create your account to manage deliveries',
                   style: AppTheme.bodyMedium,
                 ),
                 const SizedBox(height: 32),
